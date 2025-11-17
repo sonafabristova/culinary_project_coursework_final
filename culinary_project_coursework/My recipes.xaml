@@ -13,17 +13,98 @@
         </Grid.ColumnDefinitions>
 
         <!-- Основной контент -->
-        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="20">
-                <TextBlock Text="Мои рецепты" 
-                          FontSize="24" 
-                          FontWeight="Bold" 
-                          Margin="0,0,0,20"/>
+        <StackPanel Grid.Column="0" Margin="20">
+            <TextBlock Text="Мои рецепты" 
+                      FontSize="24" 
+                      FontWeight="Bold" 
+                      Margin="0,0,0,20"/>
 
-                <!-- Отдельная панель для рецептов -->
-                <StackPanel x:Name="MyRecipesContainer"/>
-            </StackPanel>
-        </ScrollViewer>
+            <!-- ListBox с включенной вертикальной прокруткой -->
+            <ListBox Name="BoxRecipes" 
+                     ItemsSource="{Binding UserRecipes}" 
+                     FontSize="14" 
+                     Background="White"
+                     Margin="0,0,0,10"
+                     SelectionChanged="Recipes_Change"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     MaxHeight="500">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="LightGray" 
+                                BorderThickness="1" 
+                                Margin="5" 
+                                Padding="15" 
+                                Background="White"
+                                Width="Auto"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                                <!-- Название рецепта -->
+                                <TextBlock>
+                                    <Run Text="{Binding Name}"
+                                      FontWeight="Bold" />
+                                </TextBlock>
+
+                                <!-- Описание -->
+                                <TextBlock Text="{Binding Description}" 
+                                          FontStyle="Italic" 
+                                          TextWrapping="Wrap"
+                                          Margin="0,5,0,0"/>
+
+                                <!-- БЖУ и калории -->
+                                <StackPanel Orientation="Horizontal" 
+                                           Margin="0,10,0,0"
+                                           HorizontalAlignment="Left">
+                                    <TextBlock>
+                                        <Run Text="Б: "/>
+                                        <Run Text="{Binding Proteins}"/>
+                                        <Run Text="г"/>
+                                    </TextBlock>
+                                    <TextBlock Margin="15,0,0,0">
+                                        <Run Text="Ж: "/>
+                                        <Run Text="{Binding Fats}"/>
+                                        <Run Text="г"/>
+                                    </TextBlock>
+                                    <TextBlock Margin="15,0,0,0">
+                                        <Run Text="У: "/>
+                                        <Run Text="{Binding Carbohydrates}"/>
+                                        <Run Text="г"/>
+                                    </TextBlock>
+                                    <TextBlock Margin="15,0,0,0" Foreground="DarkRed">
+                                        <Run Text="Калории: "/>
+                                        <Run Text="{Binding Calories}"/>
+                                        <Run Text=" ккал"/>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <!-- Время приготовления -->
+                                <TextBlock Margin="0,10,0,0" Foreground="DarkBlue">
+                                    <Run Text="Время: "/>
+                                    <Run Text="{Binding CookingTime}"/>
+                                    <Run Text=" минут"/>
+                                </TextBlock>
+
+                                <!-- Индикатор пользовательского рецепта -->
+                                <TextBlock Text="⭐️ Ваш рецепт" 
+                                          FontWeight="SemiBold" 
+                                          Foreground="Goldenrod" 
+                                          HorizontalAlignment="Right" 
+                                          Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+               
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0,2,0,2"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </StackPanel>
 
         <!-- Боковая панель -->
         <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">
@@ -36,9 +117,7 @@
 
                 <!-- Верхняя часть с кнопками -->
                 <StackPanel Grid.Row="0" Margin="15">
-                    <!-- Разделитель -->
                     <Border Height="1" Background="LightGray" Margin="0,0,0,20"/>
-
                     <Button Content="Меню" 
                             FontSize="14"
                             Background="LightSalmon"
@@ -58,7 +137,12 @@
 
                 <!-- Кнопки в самом низу -->
                 <StackPanel Grid.Row="2" Margin="15">
-                   
+                    <Button Content="Назад" 
+                            FontSize="14"
+                            Background="LightSalmon"
+                            Padding="10,5"
+                            Margin="5"
+                            Click="ButtonBack"/>
 
                     <Button Content="Выйти" 
                             FontSize="14"
@@ -70,4 +154,4 @@
             </Grid>
         </Border>
     </Grid>
-</Window> 
+</Window>
