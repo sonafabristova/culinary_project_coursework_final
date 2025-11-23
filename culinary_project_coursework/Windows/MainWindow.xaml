@@ -5,30 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culinary_project_coursework"
         mc:Ignorable="d"
-        Title="Кулинарная книга" Height="650" Width="800">
+        WindowState="Maximized"
+        WindowStyle="None"
+        Title="Кулинарная книга" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Основной контент -->
-        <StackPanel Grid.Column="0" Margin="20">
+        <!-- Основной контент - ЗАНИМАЕТ ВСЮ ВЫСОТУ -->
+        <Grid Grid.Column="0" Margin="20,20,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Заголовок -->
+                <RowDefinition Height="*"/>
+                <!-- Список рецептов (растягивается) -->
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
             <TextBlock Text="Популярные рецепты" 
                       FontSize="24" 
                       FontWeight="Bold" 
-                      Margin="0,0,0,20"/>
+                      Margin="0,0,0,20"
+                      Grid.Row="0"/>
 
-            <!-- ListBox с включенной вертикальной прокруткой -->
+            <!-- ListBox занимает всё оставшееся пространство -->
             <ListBox Name="BoxRecipes" 
                      ItemsSource="{Binding SystemRecipes}" 
                      FontSize="14" 
                      Background="White"
-                     Margin="0,0,0,10"
+                     Grid.Row="1"
                      SelectionChanged="Recipes_Change"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     MaxHeight="500">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="LightGray" 
@@ -36,14 +46,11 @@
                                 Margin="5" 
                                 Padding="15" 
                                 Background="White"
-                                Width="Auto"
                                 HorizontalAlignment="Stretch">
-                            <StackPanel Width="Auto" HorizontalAlignment="Stretch">
+                            <StackPanel HorizontalAlignment="Stretch">
                                 <!-- Название рецепта -->
                                 <TextBlock>
-                                   
-                                    <Run Text="{Binding Name}"
-                                        FontWeight="Bold" />
+                                    <Run Text="{Binding Name}" FontWeight="Bold" />
                                 </TextBlock>
 
                                 <!-- Описание -->
@@ -111,7 +118,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-        </StackPanel>
+        </Grid>
 
         <!-- Боковая панель -->
         <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">

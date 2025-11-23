@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Рецепт" Height="700" Width="600"
-        WindowStartupLocation="CenterOwner"
+        WindowState="Maximized"
+        WindowStyle="None"
+        Title="Рецепт" 
+        
         Background="White">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0">

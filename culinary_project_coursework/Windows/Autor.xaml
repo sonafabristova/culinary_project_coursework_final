@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culinary_project_coursework"
         mc:Ignorable="d"
+        WindowState="Maximized"
+        WindowStyle="None"
         Title="Autor" Height="450" Width="800">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

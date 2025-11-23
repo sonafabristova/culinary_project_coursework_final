@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culinary_project_coursework"
         mc:Ignorable="d"
-        Title="Menu" Height="450" Width="800">
+        WindowState="Maximized"
+        WindowStyle="None"
+        Title="Menu">
     <Grid>
 
         <Grid.RowDefinitions>

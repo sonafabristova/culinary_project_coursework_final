@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culinary_project_coursework"
         mc:Ignorable="d"
-        Title="Мои рецепты" Height="650" Width="800">
+        WindowState="Maximized"
+        WindowStyle="None"
+        Title="Мои рецепты" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

@@ -2,13 +2,14 @@
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Linq;
+using culinary_project_coursework.Classes;
 
 namespace culinary_project_coursework.Windows 
 {
     public partial class AddRecipeWindow : Window
     {
-        public ObservableCollection<IngredientInput> Ingredients { get; set; }
-        public ObservableCollection<CookingStepInput> Steps { get; set; }
+        public List<IngredientInput> Ingredients { get; set; }
+        public List<CookingStepInput> Steps { get; set; }
 
         public Recipe NewRecipe { get; private set; }
 
@@ -16,13 +17,12 @@ namespace culinary_project_coursework.Windows
         {
             InitializeComponent();
 
-            Ingredients = new ObservableCollection<IngredientInput>();
-            Steps = new ObservableCollection<CookingStepInput>();
+            Ingredients = new List<IngredientInput>();
+            Steps = new List<CookingStepInput>();
 
             IngredientsList.ItemsSource = Ingredients;
             StepsList.ItemsSource = Steps;
 
-            // Добавляем первый ингредиент и шаг по умолчанию
             AddIngredient_Click(null, null);
             AddStep_Click(null, null);
         }
@@ -50,7 +50,7 @@ namespace culinary_project_coursework.Windows
             if (sender is Button button && button.DataContext is CookingStepInput step)
             {
                 Steps.Remove(step);
-                // Перенумеровываем оставшиеся шаги
+                
                 for (int i = 0; i < Steps.Count; i++)
                 {
                     Steps[i].StepNumber = i + 1;

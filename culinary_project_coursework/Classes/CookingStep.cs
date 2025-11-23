@@ -1,4 +1,4 @@
-﻿namespace culinary_project_coursework
+﻿namespace culinary_project_coursework.Classes
 {
     public class CookingStep
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace culinary_project_coursework
+namespace culinary_project_coursework.Classes
 {
     public class User
     {
@@ -13,6 +13,6 @@ namespace culinary_project_coursework
         public string Login { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-        
+
     }
 }

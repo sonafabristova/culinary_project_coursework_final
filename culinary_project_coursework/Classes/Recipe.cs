@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace culinary_project_coursework
+namespace culinary_project_coursework.Classes
 {
     public class Recipe
     {

@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
+using culinary_project_coursework.Classes;
 
 namespace culinary_project_coursework.Windows
 {
