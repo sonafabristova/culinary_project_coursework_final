@@ -1,7 +1,8 @@
-﻿<Application x:Class="culinary_project_coursework.App"
+﻿
+<Application x:Class="culinary_project_coursework.Windows.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:culinary_project_coursework"
+             xmlns:local="clr-namespace:culinary_project_coursework.Windows"
          >
     <Application.Resources>
          

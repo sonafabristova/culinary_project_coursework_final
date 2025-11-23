@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace culinary_project_coursework
+namespace culinary_project_coursework.Windows 
 {
     public partial class AddRecipeWindow : Window
     {

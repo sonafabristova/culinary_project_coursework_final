@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace culinary_project_coursework
+namespace culinary_project_coursework.Windows
 {
     /// <summary>
     /// Логика взаимодействия для RecipeDetailsWindow.xaml
