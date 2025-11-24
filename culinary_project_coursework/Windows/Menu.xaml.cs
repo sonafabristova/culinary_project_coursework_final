@@ -26,7 +26,53 @@ namespace culinary_project_coursework.Windows
 
         private void CreateMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Пользователь ");
+            // Получаем выбранные значения
+            var selectedDays = DaysComboBox.SelectedItem as ComboBoxItem;
+            var selectedPeople = PeopleComboBox.SelectedItem as ComboBoxItem;
+
+            if (selectedDays == null || selectedPeople == null ||
+                selectedDays.Content.ToString() == "Выберите количество дней" ||
+                selectedPeople.Content.ToString() == "Выберите количество человек")
+            {
+                MessageBox.Show("Пожалуйста, выберите количество дней и человек");
+                return;
+            }
+
+            // Парсим количество дней и человек
+            int daysCount = ParseDaysCount(selectedDays.Content.ToString());
+            int peopleCount = ParsePeopleCount(selectedPeople.Content.ToString());
+
+            // Создаем окно создания меню с параметрами
+            CreateMenuWindow createMenuWindow = new CreateMenuWindow(daysCount, peopleCount);
+            createMenuWindow.Show();
+            this.Close();
+        }
+
+        private int ParseDaysCount(string daysText)
+        {
+            return daysText.Split(' ')[0] switch
+            {
+                "1" => 1,
+                "2" => 2,
+                "3" => 3,
+                "4" => 4,
+                "5" => 5,
+                "6" => 6,
+                "7" => 7,
+                _ => 1
+            };
+        }
+
+        private int ParsePeopleCount(string peopleText)
+        {
+            return peopleText.Split(' ')[0] switch
+            {
+                "1" => 1,
+                "2" => 2,
+                "3" => 3,
+                "4" => 4,
+                _ => 1
+            };
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

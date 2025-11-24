@@ -24,9 +24,7 @@ namespace culinary_project_coursework.Windows
                 new { Name = "Салат Цезарь" },
                 new { Name = "Куриный суп" },
                 new { Name = "Гречневая каша с грибами" },
-                new { Name = "Запеченная рыба с овощами" },
-                new { Name = "Паста Карбонара" },
-                new { Name = "Овощное рагу" }
+        
             };
 
             DishesListBox.ItemsSource = dishes;

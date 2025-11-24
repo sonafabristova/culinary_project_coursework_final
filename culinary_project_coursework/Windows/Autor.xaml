@@ -9,19 +9,31 @@
         WindowStyle="None"
         Title="Autor" Height="450" Width="800">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Image Source="C:\Users\sonaf\Source\Repos\culinary_project_coursework_final\culinary_project_coursework\Images\Autor_page.jpg" 
+               Stretch="UniformToFill" 
+               Opacity="0.7"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,130,10">
             <StackPanel Orientation="Horizontal">
-                <TextBox Margin="0,5,5,0" Width="120" Name="BoxLogin"/>
                 <TextBlock Text="Логин"/>
+                <TextBox Margin="20,5,15,10" Width="130" Name="BoxLogin"/>
+                
             </StackPanel>
             <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                <TextBox Margin="0,5,5,0" Width="120" Name="BoxPass"/>
                 <TextBlock Text="Пароль"/>
+                <TextBox Margin="12,5,15,10" Width="130" Name="BoxPass"/>
+                
             </StackPanel>
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                <Button Margin="0,5,0,0" Width="100" Height="20" Content="Войти" Name="ButtonLogin" Click="ButtonLogin_Click"/>
-                <Button Margin="0,5,0,0" Content="Зарегистрироваться" Height="20" x:Name="ButtonRegister" Click="ButtonRegister_Click"/>
+            <StackPanel Margin="0,15,0,0" Orientation="Horizontal">
+                <Button Margin="0,5,20,0" Width="100" Height="20" Content="Войти" Name="ButtonLogin" Click="ButtonLogin_Click" Background="PeachPuff"/>
+                <Button Margin="0,5,0,0" Content="Зарегистрироваться" Height="20" x:Name="ButtonRegister" Click="ButtonRegister_Click" Background="PeachPuff"/>
             </StackPanel>
         </StackPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+
+                <TextBlock Text="ДОБРО ПОЖАЛОВАТЬ!"  Margin="10,160,150,10" FontSize="25" FontWeight="DemiBold"/>
+            </StackPanel>
+        </StackPanel>
+        
     </Grid>
 </Window>

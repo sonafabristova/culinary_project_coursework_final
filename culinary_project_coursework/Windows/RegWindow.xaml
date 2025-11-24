@@ -9,6 +9,11 @@
         WindowStyle="None"
         Title="RegWindow" 
         >
+    <Grid>
+        <Image Source="C:\Users\sonaf\Source\Repos\culinary_project_coursework_final\culinary_project_coursework\Images\Autor_page.jpg" 
+        Stretch="UniformToFill" 
+        Opacity="0.7"/>
+    
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel Margin="5" Orientation="Horizontal">
             <TextBox Width="120" Name="BoxLogin"/>
@@ -31,4 +36,5 @@
             <Button Margin="5,0,0,0" Content="Отмена" Name="ButtonCancel" Click="ButtonCancel_Click"/>
         </StackPanel>
     </StackPanel>
+    </Grid>
 </Window>
