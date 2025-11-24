@@ -42,7 +42,6 @@ namespace culinary_project_coursework.Windows
             // Открываем новое окно с деталями рецепта
             var detailsWindow = new RecipeDetailsWindow(recipe)
             {
-                Owner = this // Устанавливаем главное окно как владельца
             };
             detailsWindow.ShowDialog();
           
