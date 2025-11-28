@@ -17,7 +17,7 @@ namespace culinary_project_coursework.Windows
 
         private void LoadRecipes()
         {
-            // Загружаем рецепты из AppContext
+            //  рецепты из AppContext
             var recipes = AppContext.Recipes;
             RecipesListBox.ItemsSource = recipes;
         }

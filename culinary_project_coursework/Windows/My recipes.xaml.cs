@@ -26,18 +26,14 @@ namespace culinary_project_coursework.Windows
             {
                 ShowRecipeDetails(selectedRecipe);
 
-                // Сбрасываем выделение, чтобы можно было кликнуть на тот же рецепт снова
                 BoxRecipes.SelectedItem = null;
             }
         }
 
         private void ShowRecipeDetails(Recipe recipe)
         {
-            // Открываем новое окно с деталями рецепта
-            var detailsWindow = new RecipeDetailsWindow(recipe)
-            {
-                Owner = this // Устанавливаем текущее окно как владельца
-            };
+
+            RecipeDetailsWindow detailsWindow = new RecipeDetailsWindow(recipe);
             detailsWindow.ShowDialog();
         }
 
@@ -64,7 +60,7 @@ namespace culinary_project_coursework.Windows
 
         private void ButtonDeleteRecipe(object sender, RoutedEventArgs e)
         {
-            // Аналогично ButtonDeleteCar в лабораторной
+          
             if (BoxRecipes.SelectedItem is Recipe selectedRecipe)
             {
                 MessageBoxResult result = MessageBox.Show(

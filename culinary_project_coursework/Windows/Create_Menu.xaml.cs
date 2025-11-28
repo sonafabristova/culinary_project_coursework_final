@@ -77,7 +77,7 @@ namespace culinary_project_coursework.Windows
             // Временная реализация - простое сообщение
             MessageBox.Show($"Выбор блюда для {mealType}\nPersonId: {personId}", "Выбор рецепта");
 
-            // Для демонстрации просто установим тестовое блюдо
+            // Для демонстрации тестовое блюдо
             UpdatePersonMeal(personId, mealType, "Выбранное блюдо");
         }
 

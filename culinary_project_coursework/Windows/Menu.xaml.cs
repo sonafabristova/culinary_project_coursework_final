@@ -38,11 +38,11 @@ namespace culinary_project_coursework.Windows
                 return;
             }
 
-            // Парсим количество дней и человек
+            // количество дней и человек
             int daysCount = ParseDaysCount(selectedDays.Content.ToString());
             int peopleCount = ParsePeopleCount(selectedPeople.Content.ToString());
 
-            // Создаем окно создания меню с параметрами
+            
             CreateMenuWindow createMenuWindow = new CreateMenuWindow(daysCount, peopleCount);
             createMenuWindow.Show();
             this.Close();

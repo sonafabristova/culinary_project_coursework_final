@@ -39,10 +39,8 @@ namespace culinary_project_coursework.Windows
 
         private void ShowRecipeDetails(Recipe recipe)
         {
-            // Открываем новое окно с деталями рецепта
-            var detailsWindow = new RecipeDetailsWindow(recipe)
-            {
-            };
+            RecipeDetailsWindow detailsWindow = new RecipeDetailsWindow(recipe);
+            
             detailsWindow.ShowDialog();
           
         }

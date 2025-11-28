@@ -14,8 +14,6 @@ namespace culinary_project_coursework.Windows
 
         private void LoadDishes()
         {
-            // TODO: Загрузить блюда из базы данных
-            // Временные данные для примера
             var dishes = new[]
             {
                 new { Name = "Овсяная каша с фруктами" },

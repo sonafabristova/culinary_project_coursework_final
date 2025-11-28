@@ -60,26 +60,26 @@ namespace culinary_project_coursework.Windows
 
         private void GenerateShoppingListFromMenu()
         {
-            // Собираем все ингредиенты из выбранных рецептов
+            
             var allIngredients = new Dictionary<string, double>();
 
             foreach (var day in _menuPlan.Days)
             {
                 foreach (var person in day.People)
                 {
-                    // Обрабатываем завтрак
+                    // завтрак
                     if (person.Breakfast.IsSelected && person.Breakfast.SelectedRecipe != null)
                     {
                         AddRecipeIngredients(allIngredients, person.Breakfast.SelectedRecipe);
                     }
 
-                    // Обрабатываем обед
+                    // обед
                     if (person.Lunch.IsSelected && person.Lunch.SelectedRecipe != null)
                     {
                         AddRecipeIngredients(allIngredients, person.Lunch.SelectedRecipe);
                     }
 
-                    // Обрабатываем ужин
+                    // ужин
                     if (person.Dinner.IsSelected && person.Dinner.SelectedRecipe != null)
                     {
                         AddRecipeIngredients(allIngredients, person.Dinner.SelectedRecipe);
@@ -87,7 +87,7 @@ namespace culinary_project_coursework.Windows
                 }
             }
 
-            // Добавляем ингредиенты в список покупок
+            // ингредиенты в список покупок
             foreach (var ingredient in allIngredients)
             {
                 _shoppingItems.Add(new ShoppingItem
@@ -97,7 +97,7 @@ namespace culinary_project_coursework.Windows
                 });
             }
 
-            // Если нет ингредиентов (например, рецепты без ингредиентов)
+            
             if (!_shoppingItems.Any())
             {
                 _shoppingItems.Add(new ShoppingItem

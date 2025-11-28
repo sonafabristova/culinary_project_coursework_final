@@ -68,7 +68,7 @@ namespace culinary_project_coursework.Windows
         }
     }
 
-    // Вспомогательный класс для отображения ингредиентов
+    
     public class IngredientDisplay
     {
         public string Name { get; set; }
