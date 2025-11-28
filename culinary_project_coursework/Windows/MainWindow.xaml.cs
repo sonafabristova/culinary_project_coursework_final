@@ -22,7 +22,7 @@ namespace culinary_project_coursework.Windows
 
         public MainWindow(User user) : this()
         {
-            // Дополнительная логика для пользователя, если нужно
+            AppContext.CurrentUser = user;
         }
 
         private void Recipes_Change(object sender, SelectionChangedEventArgs e)

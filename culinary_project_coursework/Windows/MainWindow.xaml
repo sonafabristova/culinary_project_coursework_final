@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culinary_project_coursework"
+        xmlns:controls="clr-namespace:culinary_project_coursework.Controls"
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
@@ -14,7 +15,7 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Основной контент - ЗАНИМАЕТ ВСЮ ВЫСОТУ -->
+        <!-- Основной контент -->
         <Grid Grid.Column="0" Margin="20,20,20,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -39,77 +40,14 @@
                      SelectionChanged="Recipes_Change"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="LightGray" 
-                                BorderThickness="1" 
-                                Margin="5" 
-                                Padding="15" 
-                                Background="White"
-                                HorizontalAlignment="Stretch">
-                            <StackPanel HorizontalAlignment="Stretch">
-                                <!-- Название рецепта -->
-                                <TextBlock>
-                                    <Run Text="{Binding Name}" FontWeight="Bold" />
-                                </TextBlock>
-
-                                <!-- Описание -->
-                                <TextBlock Text="{Binding Description}" 
-                                          FontStyle="Italic" 
-                                          TextWrapping="Wrap"
-                                          Margin="0,5,0,0"/>
-
-                                <!-- БЖУ и калории -->
-                                <StackPanel Orientation="Horizontal" 
-                                           Margin="0,10,0,0"
-                                           HorizontalAlignment="Left">
-                                    <TextBlock>
-                                        <Run Text="Б: "/>
-                                        <Run Text="{Binding Proteins}"/>
-                                        <Run Text="г"/>
-                                    </TextBlock>
-                                    <TextBlock Margin="15,0,0,0">
-                                        <Run Text="Ж: "/>
-                                        <Run Text="{Binding Fats}"/>
-                                        <Run Text="г"/>
-                                    </TextBlock>
-                                    <TextBlock Margin="15,0,0,0">
-                                        <Run Text="У: "/>
-                                        <Run Text="{Binding Carbohydrates}"/>
-                                        <Run Text="г"/>
-                                    </TextBlock>
-                                    <TextBlock Margin="15,0,0,0" Foreground="DarkRed">
-                                        <Run Text="Калории: "/>
-                                        <Run Text="{Binding Calories}"/>
-                                        <Run Text=" ккал"/>
-                                    </TextBlock>
-                                </StackPanel>
-
-                                <!-- Время приготовления -->
-                                <TextBlock Margin="0,10,0,0" Foreground="DarkBlue">
-                                    <Run Text="Время: "/>
-                                    <Run Text="{Binding CookingTime}"/>
-                                    <Run Text=" минут"/>
-                                </TextBlock>
-
-                                <!-- Ингредиенты (первые 3) -->
-                                <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
-                                    <Run Text="Ингредиенты: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding IngredientsSummary}"/>
-                                </TextBlock>
-
-                                <!-- Индикатор системного рецепта -->
-                                <TextBlock Text="🏆 Популярный рецепт" 
-                                          FontWeight="SemiBold" 
-                                          Foreground="Gold" 
-                                          HorizontalAlignment="Right" 
-                                          Margin="0,10,0,0"/>
-                            </StackPanel>
-                        </Border>
+                        <controls:RecipeControl/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 
-                <!-- Стиль для элементов ListBox, чтобы они занимали всю ширину -->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

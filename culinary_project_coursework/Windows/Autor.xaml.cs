@@ -32,7 +32,10 @@ namespace culinary_project_coursework.Windows
 
                 if (authUser != null)
                 {
-                    MainWindow mainWindow = new MainWindow(authUser); 
+                    // ВАЖНО: Устанавливаем текущего пользователя в AppContext
+                    AppContext.CurrentUser = authUser;
+
+                    MainWindow mainWindow = new MainWindow(authUser);
                     mainWindow.Show();
                     this.Close();
                 }

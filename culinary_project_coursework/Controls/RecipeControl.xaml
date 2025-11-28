@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="culinary_project_coursework.Controls.RecipeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:culinary_project_coursework.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border BorderBrush="LightGray" 
+        BorderThickness="1" 
+        Margin="5" 
+        Padding="15" 
+        Background="White"
+        CornerRadius="5"
+        Cursor="Hand">
+        <StackPanel>
+            <!-- Название рецепта -->
+            <TextBlock Text="{Binding Name}" 
+                  FontSize="18" 
+                  FontWeight="Bold"
+                  Foreground="DarkBlue"
+                  Margin="0,0,0,5"/>
+
+            <!-- Описание -->
+            <TextBlock Text="{Binding Description}" 
+                  FontStyle="Italic" 
+                  TextWrapping="Wrap"
+                  Margin="0,0,0,10"/>
+
+            <!-- БЖУ и калории -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{Binding Proteins, StringFormat='Б: {0}г '}" 
+                      FontWeight="SemiBold"
+                      Foreground="DarkGreen"
+                      Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Fats, StringFormat='Ж: {0}г '}" 
+                      FontWeight="SemiBold"
+                      Foreground="DarkOrange"
+                      Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Carbohydrates, StringFormat='У: {0}г '}" 
+                      FontWeight="SemiBold"
+                      Foreground="DarkRed"
+                      Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Calories, StringFormat='Калории: {0} ккал'}" 
+                      FontWeight="SemiBold"
+                      Foreground="DarkRed"/>
+            </StackPanel>
+
+            <!-- Время приготовления -->
+            <TextBlock Text="{Binding CookingTime, StringFormat='⏱ Время: {0} минут'}" 
+                  Foreground="DarkBlue"
+                  Margin="0,0,0,5"/>
+
+            <!-- Индикатор типа рецепта -->
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSystemRecipe}" Value="True">
+                                <Setter Property="Text" Value="🏆 Популярный рецепт"/>
+                                <Setter Property="Foreground" Value="Gold"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsSystemRecipe}" Value="False">
+                                <Setter Property="Text" Value="⭐ Ваш рецепт"/>
+                                <Setter Property="Foreground" Value="Goldenrod"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+    </Border>
+</UserControl>

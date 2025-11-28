@@ -14,8 +14,7 @@ namespace culinary_project_coursework.Windows
         {
             InitializeComponent();
 
-            // Инициализируем список рецептов как в лабораторной
-            UserRecipes = AppContext.Recipes.Where(r => !r.IsSystemRecipe).ToList();
+            UserRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.Id);
 
             DataContext = this;
         }
@@ -44,7 +43,6 @@ namespace culinary_project_coursework.Windows
 
         private void AddMyRecipesClick(object sender, RoutedEventArgs e)
         {
-            // Открываем окно добавления рецепта
             var addWindow = new AddRecipeWindow
             {
                 Owner = this
@@ -54,13 +52,10 @@ namespace culinary_project_coursework.Windows
 
             if (result == true && addWindow.NewRecipe != null)
             {
-                // Добавляем рецепт в общий список
                 AppContext.Recipes.Add(addWindow.NewRecipe);
 
-                // Обновляем список пользовательских рецептов
-                UserRecipes = AppContext.Recipes.Where(r => !r.IsSystemRecipe).ToList();
+                UserRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.Id);
 
-                // Обновляем отображение ListBox
                 BoxRecipes.Items.Refresh();
 
                 MessageBox.Show("Рецепт успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -81,7 +76,7 @@ namespace culinary_project_coursework.Windows
                 if (result == MessageBoxResult.Yes)
                 {
                     AppContext.Recipes.Remove(selectedRecipe);
-                    UserRecipes = AppContext.Recipes.Where(r => !r.IsSystemRecipe).ToList();
+                    UserRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.Id);
                     BoxRecipes.Items.Refresh();
 
                     MessageBox.Show("Рецепт успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);

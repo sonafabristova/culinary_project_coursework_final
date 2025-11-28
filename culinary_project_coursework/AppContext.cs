@@ -176,7 +176,7 @@ namespace culinary_project_coursework
                 Proteins = 8,
                 Fats = 10,
                 Carbohydrates = 18,
-                UserId = 1, // ID пользователя, который создал рецепт
+                UserId = 0, // ID пользователя, который создал рецепт
                 IsSystemRecipe = false, // Это пользовательский рецепт
                 Ingredients = new List<Ingredient>
                 {
@@ -236,13 +236,13 @@ namespace culinary_project_coursework
             }
         };
 
-        // для получения рецептов пользователя
+
         public static List<Recipe> GetUserRecipes(int userId)
         {
             return Recipes.Where(r => r.UserId == userId && !r.IsSystemRecipe).ToList();
         }
 
-        //  для получения системных рецептов
+
         public static List<Recipe> GetSystemRecipes()
         {
             return Recipes.Where(r => r.IsSystemRecipe).ToList();
