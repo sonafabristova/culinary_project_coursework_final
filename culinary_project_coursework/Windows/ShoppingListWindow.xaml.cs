@@ -128,14 +128,6 @@ namespace culinary_project_coursework.Windows
 
         private void AddProductButton_Click(object sender, RoutedEventArgs e)
         {
-            // Добавляем продукт только если список не содержит сообщение
-            if (_shoppingItems.Count == 1 &&
-                (_shoppingItems[0].ProductName.Contains("Сначала выберите") ||
-                 _shoppingItems[0].ProductName.Contains("Нет данных")))
-            {
-                _shoppingItems.Clear();
-            }
-
             _shoppingItems.Add(new ShoppingItem { ProductName = "Новый продукт", Quantity = "1 шт" });
         }
 
@@ -145,15 +137,9 @@ namespace culinary_project_coursework.Windows
                           MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void EditProductButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Редактируйте продукт непосредственно в списке", "Информация",
-                          MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
         private void SaveListButton_Click(object sender, RoutedEventArgs e)
         {
-            // Не позволяем сохранять пустой список или список с сообщениями
+            
             if (!_shoppingItems.Any() ||
                 _shoppingItems.Any(item => item.ProductName.Contains("Сначала выберите") ||
                                          item.ProductName.Contains("Нет данных")))
@@ -177,31 +163,24 @@ namespace culinary_project_coursework.Windows
                               MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void SaveShoppingListToFile(string filePath)
         {
-            try
+
+            using (var writer = new StreamWriter(filePath))
             {
-                using (var writer = new StreamWriter(filePath))
+                writer.WriteLine("СПИСОК ПОКУПОК");
+                writer.WriteLine();
+
+                foreach (var item in _shoppingItems)
                 {
-                    writer.WriteLine("СПИСОК ПОКУПОК");
-                    writer.WriteLine("==============");
-                    writer.WriteLine();
-
-                    foreach (var item in _shoppingItems)
-                    {
-                        writer.WriteLine($"{item.ProductName} - {item.Quantity}");
-                    }
-
-                    writer.WriteLine();
-                    writer.WriteLine($"Всего продуктов: {_shoppingItems.Count}");
+                    writer.WriteLine($"{item.ProductName} - {item.Quantity}");
                 }
+
+                writer.WriteLine();
+                writer.WriteLine($"Всего продуктов: {_shoppingItems.Count}");
             }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}", "Ошибка",
-                              MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            
+            
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -210,6 +189,10 @@ namespace culinary_project_coursework.Windows
             previewWindow.Show();
             this.Close();
         }
-      
+        private void ButtonExitClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
     }
 }

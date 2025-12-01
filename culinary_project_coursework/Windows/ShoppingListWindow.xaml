@@ -123,11 +123,11 @@
         <!-- Кнопки управления -->
         <Grid Grid.Row="2" Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -167,20 +167,8 @@
                     Click="DeleteProductButton_Click"
                     Name="DeleteProductButton"/>
 
-            <!-- Кнопка изменения -->
-            <Button Grid.Column="3" 
-                    Content="Изменить" 
-                    Background="#2980B9"
-                    Foreground="White"
-                    FontWeight="SemiBold"
-                    FontSize="14"
-                    Padding="15,10"
-                    Margin="0,0,10,0"
-                    Click="EditProductButton_Click"
-                    Name="EditProductButton"/>
-
             <!-- Кнопка назвать/сохранить -->
-            <Button Grid.Column="4" 
+            <Button Grid.Column="3" 
                     Content="Сохранить список" 
                     Background="#F39C12"
                     Foreground="White"
@@ -188,6 +176,16 @@
                     FontSize="14"
                     Padding="15,10"
                     Click="SaveListButton_Click"/>
+
+            <Button Grid.Column="5" 
+                    Content="Выйти" 
+                    FontSize="14"
+                    Background="LightSalmon"
+                    Foreground="White"
+                    FontWeight="SemiBold"
+                    Padding="15,10"
+                    HorizontalAlignment="Right"
+                    Click="ButtonExitClick"/>
         </Grid>
 
     </Grid>

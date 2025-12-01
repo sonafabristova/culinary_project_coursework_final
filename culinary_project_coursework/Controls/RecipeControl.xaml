@@ -63,7 +63,7 @@
                                 <Setter Property="Foreground" Value="Gold"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsSystemRecipe}" Value="False">
-                                <Setter Property="Text" Value="⭐ Ваш рецепт"/>
+                                <Setter Property="Text" Value="🔱 Ваш рецепт"/>
                                 <Setter Property="Foreground" Value="Goldenrod"/>
                             </DataTrigger>
                         </Style.Triggers>

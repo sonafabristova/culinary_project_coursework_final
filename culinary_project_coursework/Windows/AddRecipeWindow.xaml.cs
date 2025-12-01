@@ -8,17 +8,16 @@ namespace culinary_project_coursework.Windows
 {
     public partial class AddRecipeWindow : Window
     {
-        public List<IngredientInput> Ingredients { get; set; }
-        public List<CookingStepInput> Steps { get; set; }
+        public ObservableCollection<IngredientInput> Ingredients { get; set; }
+        public ObservableCollection<CookingStepInput> Steps { get; set; }
 
         public Recipe NewRecipe { get; private set; }
-
         public AddRecipeWindow()
         {
             InitializeComponent();
 
-            Ingredients = new List<IngredientInput>();
-            Steps = new List<CookingStepInput>();
+            Ingredients = new ObservableCollection<IngredientInput>();
+            Steps = new ObservableCollection<CookingStepInput>();
 
             IngredientsList.ItemsSource = Ingredients;
             StepsList.ItemsSource = Steps;
