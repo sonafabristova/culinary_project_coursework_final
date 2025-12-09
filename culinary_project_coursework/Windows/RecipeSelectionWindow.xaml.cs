@@ -21,7 +21,7 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     var recipes = db.Рецептыs
                 .Include(r => r.CreatedByUser)

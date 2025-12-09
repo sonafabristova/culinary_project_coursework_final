@@ -20,7 +20,7 @@ namespace culinary_project_coursework
 
                 try
                 {
-                    using (var db = new ForCwContext())
+                    using (var db = new WithIngContext())
                     {
                         return db.Пользователиs
                             .FirstOrDefault(u => u.IdПользователя == CurrentUserId.Value);
@@ -38,7 +38,7 @@ namespace culinary_project_coursework
         }
         public static List<Рецепты> ReloadRecipes()
         {
-            using (var db = new ForCwContext())
+            using (var db = new WithIngContext())
             {
                 return db.Рецептыs
                     .Include(r => r.CreatedByUser)
@@ -77,7 +77,7 @@ namespace culinary_project_coursework
             {
                 try
                 {
-                    using (var db = new ForCwContext())
+                    using (var db = new WithIngContext())
                     {
                         return db.Рецептыs
                             .Include(r => r.CreatedByUser)
@@ -102,7 +102,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     return db.Рецептыs
                         .Include(r => r.CreatedByUser)
@@ -126,7 +126,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     return db.Рецептыs
                         .Include(r => r.CreatedByUser)
@@ -151,7 +151,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     var user = db.Пользователиs
                         .FirstOrDefault(u => u.Логин == login && u.Пароль == password && u.IsActive == true);
@@ -176,7 +176,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     // Проверка существования пользователя
                     if (db.Пользователиs.Any(u => u.Логин == login))
@@ -212,7 +212,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     db.Рецептыs.Add(recipe);
                     db.SaveChanges();
@@ -229,7 +229,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     var recipe = db.Рецептыs.Find(recipeId);
                     if (recipe != null)
@@ -250,7 +250,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     return db.Пользователиs.Any(u => u.Логин == login);
                 }
@@ -266,7 +266,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     var recipes = db.Рецептыs.ToList();
                     var message = $"В БД {recipes.Count} рецептов:\n";
