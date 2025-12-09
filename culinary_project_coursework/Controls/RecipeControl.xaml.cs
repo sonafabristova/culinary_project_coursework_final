@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Controls
 {
@@ -8,17 +9,13 @@ namespace culinary_project_coursework.Controls
         public RecipeControl()
         {
             InitializeComponent();
+            Loaded += (s, e) =>
+            {
+                if (DataContext == null && Parent is FrameworkElement parent)
+                {
+                    DataContext = parent.DataContext;
+                }
+            };
         }
-
-        // Свойство для привязки рецепта (опционально, можно использовать прямо DataContext)
-        public object RecipeData
-        {
-            get { return (object)GetValue(RecipeDataProperty); }
-            set { SetValue(RecipeDataProperty, value); }
-        }
-
-        public static readonly DependencyProperty RecipeDataProperty =
-            DependencyProperty.Register("RecipeData", typeof(object), typeof(RecipeControl),
-                new PropertyMetadata(null));
     }
 }

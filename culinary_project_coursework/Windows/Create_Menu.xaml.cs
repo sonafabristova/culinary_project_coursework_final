@@ -141,8 +141,8 @@ namespace culinary_project_coursework.Windows
             // TODO: Реализовать сохранение в базу данных
             Console.WriteLine("Сохранение меню в базу данных...");
         }
-       
-       
-        
+
+
+
     }
 }

@@ -5,71 +5,67 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:culinary_project_coursework.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderBrush="LightGray" 
-        BorderThickness="1" 
-        Margin="5" 
-        Padding="15" 
-        Background="White"
-        CornerRadius="5"
-        Cursor="Hand">
-        <StackPanel>
+             d:DesignHeight="100" d:DesignWidth="300">
+    <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
             <!-- Название рецепта -->
-            <TextBlock Text="{Binding Name}" 
-                  FontSize="18" 
-                  FontWeight="Bold"
-                  Foreground="DarkBlue"
-                  Margin="0,0,0,5"/>
+            <TextBlock Grid.Row="0" 
+                       Text="{Binding Название}" 
+                       FontSize="16" 
+                       FontWeight="Bold"
+                       Foreground="DarkBlue"
+                       TextWrapping="Wrap"/>
 
             <!-- Описание -->
-            <TextBlock Text="{Binding Description}" 
-                  FontStyle="Italic" 
-                  TextWrapping="Wrap"
-                  Margin="0,0,0,10"/>
+            <TextBlock Grid.Row="1" 
+                       Text="{Binding Описание}" 
+                       FontSize="12"
+                       Foreground="Gray"
+                       TextWrapping="Wrap"
+                       Margin="0,5,0,0"
+                       MaxHeight="40"
+                       TextTrimming="CharacterEllipsis"/>
 
-            <!-- БЖУ и калории -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <TextBlock Text="{Binding Proteins, StringFormat='Б: {0}г '}" 
-                      FontWeight="SemiBold"
-                      Foreground="DarkGreen"
-                      Margin="0,0,10,0"/>
-                <TextBlock Text="{Binding Fats, StringFormat='Ж: {0}г '}" 
-                      FontWeight="SemiBold"
-                      Foreground="DarkOrange"
-                      Margin="0,0,10,0"/>
-                <TextBlock Text="{Binding Carbohydrates, StringFormat='У: {0}г '}" 
-                      FontWeight="SemiBold"
-                      Foreground="DarkRed"
-                      Margin="0,0,10,0"/>
-                <TextBlock Text="{Binding Calories, StringFormat='Калории: {0} ккал'}" 
-                      FontWeight="SemiBold"
-                      Foreground="DarkRed"/>
+            <!-- Детали -->
+            <StackPanel Grid.Row="2" 
+                        Orientation="Horizontal" 
+                        Margin="0,10,0,0">
+
+                <!-- Время приготовления -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="⏱️" FontSize="12" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding ВремяПриготовления}" FontSize="12"/>
+                    <TextBlock Text=" мин" FontSize="12" Margin="2,0,0,0"/>
+                </StackPanel>
+
+                <!-- Калории -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="🔥" FontSize="12" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding Калории}" FontSize="12"/>
+                    <TextBlock Text=" ккал" FontSize="12" Margin="2,0,0,0"/>
+                </StackPanel>
+
+                <!-- БЖУ -->
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🥩" FontSize="12" Margin="0,0,2,0"/>
+                    <TextBlock Text="{Binding Белки, StringFormat={}{0:F1}}" FontSize="10"/>
+                    <TextBlock Text="г" FontSize="10" Margin="0,0,5,0"/>
+
+                    <TextBlock Text="🥑" FontSize="12" Margin="5,0,2,0"/>
+                    <TextBlock Text="{Binding Жиры, StringFormat={}{0:F1}}" FontSize="10"/>
+                    <TextBlock Text="г" FontSize="10" Margin="0,0,5,0"/>
+
+                    <TextBlock Text="🍞" FontSize="12" Margin="5,0,2,0"/>
+                    <TextBlock Text="{Binding Углеводы, StringFormat={}{0:F1}}" FontSize="10"/>
+                    <TextBlock Text="г" FontSize="10"/>
+                </StackPanel>
             </StackPanel>
-
-            <!-- Время приготовления -->
-            <TextBlock Text="{Binding CookingTime, StringFormat='⏱ Время: {0} минут'}" 
-                  Foreground="DarkBlue"
-                  Margin="0,0,0,5"/>
-
-            <!-- Индикатор типа рецепта -->
-            <TextBlock>
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsSystemRecipe}" Value="True">
-                                <Setter Property="Text" Value="🏆 Популярный рецепт"/>
-                                <Setter Property="Foreground" Value="Gold"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSystemRecipe}" Value="False">
-                                <Setter Property="Text" Value="🔱 Ваш рецепт"/>
-                                <Setter Property="Foreground" Value="Goldenrod"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

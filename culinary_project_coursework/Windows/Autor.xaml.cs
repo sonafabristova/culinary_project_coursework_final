@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using culinary_project_coursework.Classes;
+using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Windows
 {
@@ -28,14 +28,12 @@ namespace culinary_project_coursework.Windows
         {
             if (!string.IsNullOrWhiteSpace(BoxLogin.Text) && !string.IsNullOrWhiteSpace(BoxPass.Text))
             {
-                User? authUser = AppContext.Users.FirstOrDefault(q => q.Login == BoxLogin.Text && q.Password == BoxPass.Text);
+                var user = AppContext.AuthenticateUser(BoxLogin.Text, BoxPass.Text);
 
-                if (authUser != null)
+                if (user != null)
                 {
-                    // ВАЖНО: Устанавливаем текущего пользователя в AppContext
-                    AppContext.CurrentUser = authUser;
-
-                    MainWindow mainWindow = new MainWindow(authUser);
+                    // Просто создаем MainWindow - CurrentUser уже установлен в AuthenticateUser
+                    MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
                     this.Close();
                 }
@@ -57,4 +55,3 @@ namespace culinary_project_coursework.Windows
         }
     }
 }
-

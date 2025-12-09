@@ -2,47 +2,73 @@
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
-using culinary_project_coursework.Classes;
+using System.Collections.ObjectModel; // ДОБАВИТЬ
+using culinary_project_coursework.Models;
 
-namespace culinary_project_coursework.Windows 
+namespace culinary_project_coursework.Windows
 {
     public partial class MainWindow : Window
     {
-        public List<Recipe> SystemRecipes { get; set; }
+        // ИЗМЕНИТЬ: Использовать ObservableCollection вместо List
+        public ObservableCollection<Рецепты> SystemRecipes { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // Список системных рецептов
-            SystemRecipes = AppContext.Recipes.Where(r => r.IsSystemRecipe).ToList();
+            // ИНИЦИАЛИЗИРОВАТЬ коллекцию ДО установки DataContext
+            SystemRecipes = new ObservableCollection<Рецепты>();
 
+            // Установить DataContext
             DataContext = this;
+
+            // Загрузить рецепты
+            LoadRecipes();
         }
 
-        public MainWindow(User user) : this()
+        public MainWindow(Пользователи user) : this()
         {
             AppContext.CurrentUser = user;
         }
 
+        private void LoadRecipes()
+        {
+            try
+            {
+                SystemRecipes.Clear();
+
+                // Всегда свежие данные
+                var recipes = AppContext.GetSystemRecipes();
+
+                foreach (var recipe in recipes)
+                {
+                    SystemRecipes.Add(recipe);
+                }
+
+                if (SystemRecipes.Count == 0)
+                {
+                    MessageBox.Show("В базе данных нет системных рецептов.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+
         private void Recipes_Change(object sender, SelectionChangedEventArgs e)
         {
-            // Обработчик выбора рецепта - срабатывает при клике на рецепт
-            if (BoxRecipes.SelectedItem is Recipe selectedRecipe)
+            if (BoxRecipes.SelectedItem is Рецепты selectedRecipe)
             {
                 ShowRecipeDetails(selectedRecipe);
-
-                // Сбрасываем выделение, чтобы можно было кликнуть на тот же рецепт снова
                 BoxRecipes.SelectedItem = null;
             }
         }
 
-        private void ShowRecipeDetails(Recipe recipe)
+        private void ShowRecipeDetails(Рецепты recipe)
         {
             RecipeDetailsWindow detailsWindow = new RecipeDetailsWindow(recipe);
-            
             detailsWindow.ShowDialog();
-          
         }
 
         private void ButtonMyRecipesClick(object sender, RoutedEventArgs e)

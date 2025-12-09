@@ -2,37 +2,76 @@
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
-using culinary_project_coursework.Classes;
+using System.Collections.ObjectModel; // ДОБАВИТЬ
+using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Windows
 {
     public partial class My_recipes : Window
     {
-        public List<Recipe> UserRecipes { get; set; }
+        // ИЗМЕНИТЬ: Использовать ObservableCollection
+        public ObservableCollection<Рецепты> UserRecipes { get; set; }
 
         public My_recipes()
         {
             InitializeComponent();
 
-            UserRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.Id);
+            // ИНИЦИАЛИЗИРОВАТЬ коллекцию
+            UserRecipes = new ObservableCollection<Рецепты>();
 
+            // Установить DataContext
             DataContext = this;
+
+            // Загрузить рецепты
+            LoadRecipes();
+        }
+
+        private void LoadRecipes()
+        {
+            try
+            {
+                // Получаем рецепты текущего пользователя ИЗ БАЗЫ ДАННЫХ
+                if (AppContext.CurrentUser != null)
+                {
+                    var recipes = AppContext.GetUserRecipes(AppContext.CurrentUser.IdПользователя);
+
+                    // Очистить и заполнить коллекцию
+                    UserRecipes.Clear();
+                    foreach (var recipe in recipes)
+                    {
+                        UserRecipes.Add(recipe);
+                    }
+
+                    Console.WriteLine($"Загружено {UserRecipes.Count} пользовательских рецептов");
+
+                    if (UserRecipes.Count == 0)
+                    {
+                        MessageBox.Show("У вас пока нет сохраненных рецептов");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Пользователь не авторизован");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки рецептов: {ex.Message}");
+                UserRecipes.Clear();
+            }
         }
 
         private void Recipes_Change(object sender, SelectionChangedEventArgs e)
         {
-            // Обработчик выбора рецепта
-            if (BoxRecipes.SelectedItem is Recipe selectedRecipe)
+            if (BoxRecipes.SelectedItem is Рецепты selectedRecipe)
             {
                 ShowRecipeDetails(selectedRecipe);
-
                 BoxRecipes.SelectedItem = null;
             }
         }
 
-        private void ShowRecipeDetails(Recipe recipe)
+        private void ShowRecipeDetails(Рецепты recipe)
         {
-
             RecipeDetailsWindow detailsWindow = new RecipeDetailsWindow(recipe);
             detailsWindow.ShowDialog();
         }
@@ -48,39 +87,72 @@ namespace culinary_project_coursework.Windows
 
             if (result == true && addWindow.NewRecipe != null)
             {
-                AppContext.Recipes.Add(addWindow.NewRecipe);
+                try
+                {
+                    // Устанавливаем автора рецепта
+                    addWindow.NewRecipe.CreatedByUserId = AppContext.CurrentUser?.IdПользователя;
+                    addWindow.NewRecipe.IsSystemRecipe = false;
 
-                UserRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.Id);
+                    // Добавляем рецепт в базу данных
+                    AppContext.AddRecipe(addWindow.NewRecipe);
 
-                BoxRecipes.Items.Refresh();
+                    // Обновляем список
+                    if (AppContext.CurrentUser != null)
+                    {
+                        // Перезагружаем рецепты из БД
+                        var recipes = AppContext.GetUserRecipes(AppContext.CurrentUser.IdПользователя);
+                        UserRecipes.Clear();
+                        foreach (var recipe in recipes)
+                        {
+                            UserRecipes.Add(recipe);
+                        }
+                    }
 
-                MessageBox.Show("Рецепт успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Рецепт успешно добавлен!", "Успех",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка добавления рецепта: {ex.Message}",
+                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
         private void ButtonDeleteRecipe(object sender, RoutedEventArgs e)
         {
-          
-            if (BoxRecipes.SelectedItem is Recipe selectedRecipe)
+            if (BoxRecipes.SelectedItem is Рецепты selectedRecipe)
             {
                 MessageBoxResult result = MessageBox.Show(
-                    $"Вы уверены, что хотите удалить рецепт '{selectedRecipe.Name}'?",
+                    $"Вы уверены, что хотите удалить рецепт '{selectedRecipe.Название}'?",
                     "Подтверждение удаления",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    AppContext.Recipes.Remove(selectedRecipe);
-                    UserRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.Id);
-                    BoxRecipes.Items.Refresh();
+                    try
+                    {
+                        // Удаляем рецепт из базы данных
+                        AppContext.DeleteRecipe(selectedRecipe.IdРецепта);
 
-                    MessageBox.Show("Рецепт успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                        // Удаляем из коллекции
+                        UserRecipes.Remove(selectedRecipe);
+
+                        MessageBox.Show("Рецепт успешно удален!", "Успех",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка удаления рецепта: {ex.Message}",
+                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("Пожалуйста, выберите рецепт для удаления.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Пожалуйста, выберите рецепт для удаления.",
+                    "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

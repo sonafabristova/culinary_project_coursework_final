@@ -22,7 +22,7 @@ namespace culinary_project_coursework.Windows
                 new { Name = "Салат Цезарь" },
                 new { Name = "Куриный суп" },
                 new { Name = "Гречневая каша с грибами" },
-        
+
             };
 
             DishesListBox.ItemsSource = dishes;

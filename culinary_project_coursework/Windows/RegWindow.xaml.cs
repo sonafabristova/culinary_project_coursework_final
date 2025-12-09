@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using culinary_project_coursework.Classes;
+using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Windows
 {
@@ -20,10 +20,6 @@ namespace culinary_project_coursework.Windows
     /// </summary>
     public partial class RegWindow : Window
     {
-        
-
-        public User RegUser { get; private set; }
-
         public RegWindow()
         {
             InitializeComponent();
@@ -34,32 +30,24 @@ namespace culinary_project_coursework.Windows
             if (!string.IsNullOrEmpty(BoxLogin.Text) && !string.IsNullOrEmpty(BoxPass.Text) &&
                 !string.IsNullOrEmpty(BoxName.Text) && !string.IsNullOrEmpty(BoxPhoneNumber.Text))
             {
-                if (AppContext.Users.Any(u => u.Login == BoxLogin.Text))
+                // Используем новый метод регистрации
+                if (AppContext.RegisterUser(BoxName.Text, BoxLogin.Text, BoxPass.Text, BoxPhoneNumber.Text))
+                {
+                    this.DialogResult = true;
+                    this.Close();
+                }
+                else
                 {
                     MessageBox.Show("Пользователь с таким логином уже существует");
-                    return;
                 }
-
-                RegUser = new User()
-                {
-                    Id = AppContext.Users.Count,
-                    Login = BoxLogin.Text,
-                    Password = BoxPass.Text,
-                    Name = BoxName.Text,
-                    PhoneNumber = BoxPhoneNumber.Text,
-                    
-                };
-
-                AppContext.Users.Add(RegUser);
-
-                this.DialogResult = true;
-                this.Close();
             }
             else
             {
                 MessageBox.Show("Заполните все поля");
             }
         }
+
+
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -68,4 +56,3 @@ namespace culinary_project_coursework.Windows
         }
     }
 }
-

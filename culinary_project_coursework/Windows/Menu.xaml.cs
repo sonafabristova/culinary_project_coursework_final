@@ -42,7 +42,7 @@ namespace culinary_project_coursework.Windows
             int daysCount = ParseDaysCount(selectedDays.Content.ToString());
             int peopleCount = ParsePeopleCount(selectedPeople.Content.ToString());
 
-            
+
             CreateMenuWindow createMenuWindow = new CreateMenuWindow(daysCount, peopleCount);
             createMenuWindow.Show();
             this.Close();

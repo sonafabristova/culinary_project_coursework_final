@@ -39,7 +39,7 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
-                
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <controls:RecipeControl/>
