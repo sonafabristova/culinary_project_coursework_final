@@ -25,7 +25,7 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                using (var db = new ForCwContext())
+                using (var db = new WithIngContext())
                 {
                     // Проверяем, можем ли подключиться к базе
                     bool canConnect = db.Database.CanConnect();

@@ -59,16 +59,28 @@ namespace culinary_project_coursework.Windows
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            // Проверка обязательных полей
             if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
                 MessageBox.Show("Введите название рецепта", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Создаем новый рецепт
+            if (Ingredients.Count(i => !string.IsNullOrWhiteSpace(i.Name)) == 0)
+            {
+                MessageBox.Show("Добавьте хотя бы один ингредиент", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (Steps.Count(s => !string.IsNullOrWhiteSpace(s.Description)) == 0)
+            {
+                MessageBox.Show("Добавьте хотя бы один шаг приготовления", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Создаем новый рецепт (ID будет сгенерирован БД)
             NewRecipe = new Рецепты
             {
-                IdРецепта = AppContext.Recipes.Count > 0 ? AppContext.Recipes.Max(r => r.IdРецепта) + 1 : 1,
                 Название = NameTextBox.Text.Trim(),
                 Описание = DescriptionTextBox.Text.Trim(),
                 ВремяПриготовления = int.TryParse(TimeTextBox.Text, out int time) ? time : 0,
@@ -80,16 +92,25 @@ namespace culinary_project_coursework.Windows
                 IsSystemRecipe = false
             };
 
+            // Инициализируем коллекции
+            NewRecipe.СоставБлюдаs = new List<СоставБлюда>();
+            NewRecipe.ШагиПриготовленияs = new List<ШагиПриготовления>();
+
             // Добавляем ингредиенты
             foreach (var ingredientInput in Ingredients.Where(i => !string.IsNullOrWhiteSpace(i.Name)))
             {
-                // Создаем временный состав блюда
-                // В реальном приложении здесь нужно создавать Ингредиенты
-                NewRecipe.СоставБлюдаs.Add(new СоставБлюда
+                var ingredient = AppContext.FindOrCreateIngredient(ingredientInput.Name);
+                if (ingredient != null)
                 {
-                    IdСостава = NewRecipe.СоставБлюдаs.Count + 1,
-                    Количество = decimal.TryParse(ingredientInput.Amount, out decimal amount) ? amount : 0
-                });
+                    var unit = ingredientInput.Unit?.ToString() ?? "г";
+
+                    NewRecipe.СоставБлюдаs.Add(new СоставБлюда
+                    {
+                        FkИнгредиента = ingredient.IdИнгредиента,
+                        Количество = decimal.TryParse(ingredientInput.Amount, out decimal amount) ? amount : 0
+                        
+                    });
+                }
             }
 
             // Добавляем шаги приготовления
@@ -97,7 +118,6 @@ namespace culinary_project_coursework.Windows
             {
                 NewRecipe.ШагиПриготовленияs.Add(new ШагиПриготовления
                 {
-                    IdШага = NewRecipe.ШагиПриготовленияs.Count + 1,
                     НомерШага = stepInput.StepNumber,
                     Описание = stepInput.Description.Trim()
                 });

@@ -35,12 +35,15 @@ namespace culinary_project_coursework.Windows
             if (recipe.СоставБлюдаs != null && recipe.СоставБлюдаs.Any())
             {
                 var ingredientsData = recipe.СоставБлюдаs
-                    .Select(i => new RecipeIngredientDisplay
-                    {
-                        Name = i.FkИнгредиентаNavigation?.Название ?? "Неизвестно",
-                        Amount = $"{i.Количество} {i.FkИнгредиентаNavigation?.FkЕдиницыИзмеренияNavigation?.Название ?? "г"}"
-                    })
-                    .ToList();
+                 .GroupBy(i => i.FkИнгредиента) // Группируем по ID ингредиента
+                 .Select(g => g.First()) // Берем первый из каждой группы
+                 .Select(i => new RecipeIngredientDisplay
+             {
+                 Name = i.FkИнгредиентаNavigation?.Название ?? "Неизвестно",
+                 Amount = $"{i.Количество} {i.FkИнгредиентаNavigation?.FkЕдиницыИзмеренияNavigation?.Название ?? "г"}"
+             })
+                  .ToList();
+                
                 IngredientsList.ItemsSource = ingredientsData;
             }
             else

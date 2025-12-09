@@ -55,7 +55,7 @@ namespace culinary_project_coursework
             {
                 try
                 {
-                    using (var db = new ForCwContext())
+                    using (var db = new WithIngContext())
                     {
                         return db.Пользователиs
                             .Where(u => u.IsActive == true)
@@ -208,22 +208,98 @@ namespace culinary_project_coursework
         }
 
         // Добавление рецепта
+        // Добавление рецепта
         public static void AddRecipe(Рецепты recipe)
         {
             try
             {
                 using (var db = new WithIngContext())
                 {
+                    // Отслеживаем изменения для отладки
+                    db.ChangeTracker.StateChanged += (sender, args) =>
+                    {
+                        Console.WriteLine("Обнаружены изменения в трекере");
+                    };
+
+                    // Добавляем рецепт
                     db.Рецептыs.Add(recipe);
-                    db.SaveChanges();
+
+                    // Пробуем сохранить
+                    int changes = db.SaveChanges();
+
+                    MessageBox.Show($"Рецепт успешно добавлен! Изменений: {changes}",
+                        "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Детальная информация об ошибке БД
+                string errorDetails = GetDbErrorDetails(dbEx);
+
+                MessageBox.Show($"Ошибка БД при добавлении рецепта:\n\n{errorDetails}",
+                    "Ошибка БД", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка добавления рецепта: {ex.Message}");
+                string fullError = $"Сообщение: {ex.Message}\n\n";
+
+                if (ex.InnerException != null)
+                {
+                    fullError += $"Внутренняя ошибка: {ex.InnerException.Message}\n\n";
+
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        fullError += $"Детали: {ex.InnerException.InnerException.Message}";
+                    }
+                }
+
+                MessageBox.Show($"Ошибка добавления рецепта:\n\n{fullError}",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        // Метод для получения детальной информации об ошибке БД
+        private static string GetDbErrorDetails(DbUpdateException dbEx)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"Тип ошибки: {dbEx.GetType().Name}");
+            sb.AppendLine($"Сообщение: {dbEx.Message}");
+
+            if (dbEx.InnerException != null)
+            {
+                sb.AppendLine($"\nВнутренняя ошибка: {dbEx.InnerException.Message}");
+
+                // Пробуем получить детали SQL ошибки
+                var sqlEx = dbEx.InnerException as Microsoft.Data.SqlClient.SqlException;
+                if (sqlEx != null)
+                {
+                    sb.AppendLine($"\nSQL Ошибка #{sqlEx.Number}: {sqlEx.Message}");
+
+                    foreach (Microsoft.Data.SqlClient.SqlError error in sqlEx.Errors)
+                    {
+                        sb.AppendLine($"- Ошибка #{error.Number}: {error.Message}");
+                        sb.AppendLine($"  Процедура: {error.Procedure}, Строка: {error.LineNumber}");
+                    }
+                }
+            }
+
+            // Информация о сущностях, вызвавших ошибку
+            sb.AppendLine("\nСущности с ошибками:");
+            foreach (var entry in dbEx.Entries)
+            {
+                sb.AppendLine($"- Тип: {entry.Entity.GetType().Name}, Состояние: {entry.State}");
+
+                if (entry.State == EntityState.Added)
+                {
+                    foreach (var property in entry.Properties)
+                    {
+                        sb.AppendLine($"  {property.Metadata.Name} = {property.CurrentValue ?? "NULL"}");
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
         // Удаление рецепта
         public static void DeleteRecipe(int recipeId)
         {
@@ -291,6 +367,28 @@ namespace culinary_project_coursework
         {
             // Создаем новый контекст для следующего запроса
             Console.WriteLine("Данные обновлены");
+        }
+        public static Ингредиенты FindOrCreateIngredient(string name)
+        {
+            using (var context = new WithIngContext())
+            {
+                var ingredient = context.Ингредиентыs
+                    .FirstOrDefault(i => i.Название.ToLower() == name.ToLower());
+
+                if (ingredient == null)
+                {
+                    ingredient = new Ингредиенты
+                    {
+                        Название = name,
+                        FkЕдиницыИзмерения = 1 // По умолчанию граммы
+                                               // ПРОБЛЕМА: Возможно где-то еще устанавливается IdИнгредиента
+                    };
+                    context.Ингредиентыs.Add(ingredient);
+                    context.SaveChanges();
+                }
+
+                return ingredient; // ← Возвращает объект с ID
+            }
         }
     }
 }
