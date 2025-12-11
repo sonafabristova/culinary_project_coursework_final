@@ -185,9 +185,9 @@ namespace culinary_project_coursework.Windows
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MenuPreviewWindow previewWindow = new MenuPreviewWindow(_menuPlan);
-            previewWindow.Show();
-            this.Close();
+            //MenuPreviewWindow previewWindow = new MenuPreviewWindow(_menuPlan);
+            //previewWindow.Show();
+            //this.Close();
         }
         private void ButtonExitClick(object sender, RoutedEventArgs e)
         {

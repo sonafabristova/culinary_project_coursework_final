@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using culinary_project_coursework.Classes;
+using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Windows
 {
     public partial class CreateMenuWindow : Window
     {
         private MenuPlan _menuPlan;
+        private Dictionary<string, string> _recipeNames = new Dictionary<string, string>();
 
         public CreateMenuWindow(int daysCount, int peopleCount)
         {
@@ -51,59 +53,104 @@ namespace culinary_project_coursework.Windows
             DaysItemsControl.ItemsSource = _menuPlan.Days;
         }
 
-        private void SelectBreakfast_Click(object sender, RoutedEventArgs e)
+        private async void SelectBreakfast_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var personId = button.Tag.ToString();
-            SelectRecipeForMeal(personId, "breakfast");
+            await SelectRecipeForMeal(personId, "breakfast", button);
         }
 
-        private void SelectLunch_Click(object sender, RoutedEventArgs e)
+        private async void SelectLunch_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var personId = button.Tag.ToString();
-            SelectRecipeForMeal(personId, "lunch");
+            await SelectRecipeForMeal(personId, "lunch", button);
         }
 
-        private void SelectDinner_Click(object sender, RoutedEventArgs e)
+        private async void SelectDinner_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var personId = button.Tag.ToString();
-            SelectRecipeForMeal(personId, "dinner");
+            await SelectRecipeForMeal(personId, "dinner", button);
         }
 
-        private void SelectRecipeForMeal(string personId, string mealType)
+        private async System.Threading.Tasks.Task SelectRecipeForMeal(string personId, string mealType, Button button)
         {
-            // Временная реализация - простое сообщение
-            MessageBox.Show($"Выбор блюда для {mealType}\nPersonId: {personId}", "Выбор рецепта");
-
-            // Для демонстрации тестовое блюдо
-            UpdatePersonMeal(personId, mealType, "Выбранное блюдо");
-        }
-
-        private void UpdatePersonMeal(string personId, string mealType, string dishName)
-        {
-            var parts = personId.Split('-');
-            if (parts.Length == 2 && int.TryParse(parts[0], out int day) && int.TryParse(parts[1], out int person))
+            try
             {
-                var dayModel = _menuPlan.Days[day - 1];
-                var personModel = dayModel.People[person - 1];
-
-                switch (mealType.ToLower())
+                // Показываем окно выбора рецепта
+                var recipeSelectionWindow = new RecipeSelectionWindow
                 {
-                    case "breakfast":
-                        personModel.Breakfast.DishName = dishName;
-                        break;
-                    case "lunch":
-                        personModel.Lunch.DishName = dishName;
-                        break;
-                    case "dinner":
-                        personModel.Dinner.DishName = dishName;
-                        break;
-                }
+                    Owner = this,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
 
-                // Обновляем отображение
-                DaysItemsControl.Items.Refresh();
+                var result = recipeSelectionWindow.ShowDialog();
+
+                if (result == true && recipeSelectionWindow.SelectedRecipe != null)
+                {
+                    var selectedRecipe = recipeSelectionWindow.SelectedRecipe;
+
+                    // Обновляем кнопку с названием выбранного рецепта
+                    UpdateButtonWithRecipe(button, selectedRecipe.Название);
+
+                    // Сохраняем в словарь
+                    var key = $"{personId}-{mealType}";
+                    _recipeNames[key] = selectedRecipe.Название;
+
+                    // Также сохраняем в MenuPlan
+                    UpdateMenuPlanWithRecipe(personId, mealType, selectedRecipe.Название);
+
+                    MessageBox.Show($"Выбрано: {selectedRecipe.Название}\nДля: {mealType}",
+                        "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка выбора рецепта: {ex.Message}", "Ошибка");
+            }
+        }
+
+        private void UpdateButtonWithRecipe(Button button, string recipeName)
+        {
+            // Обновляем содержимое кнопки
+            button.Content = recipeName;
+            button.FontWeight = FontWeights.Normal;
+            button.FontStyle = FontStyles.Italic;
+            button.Foreground = System.Windows.Media.Brushes.DarkGreen;
+            button.ToolTip = $"Выбрано: {recipeName}";
+        }
+
+        private void UpdateMenuPlanWithRecipe(string personId, string mealType, string recipeName)
+        {
+            try
+            {
+                var parts = personId.Split('-');
+                if (parts.Length == 2 && int.TryParse(parts[0], out int day) && int.TryParse(parts[1], out int person))
+                {
+                    var dayModel = _menuPlan.Days[day - 1];
+                    var personModel = dayModel.People[person - 1];
+
+                    switch (mealType.ToLower())
+                    {
+                        case "breakfast":
+                            personModel.Breakfast.DishName = recipeName;
+                            break;
+                        case "lunch":
+                            personModel.Lunch.DishName = recipeName;
+                            break;
+                        case "dinner":
+                            personModel.Dinner.DishName = recipeName;
+                            break;
+                    }
+
+                    // Обновляем отображение
+                    DaysItemsControl.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка обновления меню: {ex.Message}", "Ошибка");
             }
         }
 
@@ -124,9 +171,79 @@ namespace culinary_project_coursework.Windows
 
         private void ShowMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            var menuPreviewWindow = new MenuPreviewWindow(_menuPlan);
-            menuPreviewWindow.Show();
-            this.Close();
+            try
+            {
+                // Получаем ID рецептов
+                var selectedRecipeIds = new Dictionary<string, int?>();
+                var recipeNames = new Dictionary<string, string>();
+                var recipeObjects = new Dictionary<string, Рецепты>();
+
+                using (var context = new WithIngContext())
+                {
+                    foreach (var entry in _recipeNames)
+                    {
+                        recipeNames[entry.Key] = entry.Value;
+
+                        var recipe = context.Рецептыs
+                            .FirstOrDefault(r => r.Название == entry.Value);
+
+                        if (recipe != null)
+                        {
+                            selectedRecipeIds[entry.Key] = recipe.IdРецепта;
+                            recipeObjects[entry.Key] = recipe;
+                        }
+                        else
+                        {
+                            selectedRecipeIds[entry.Key] = null;
+                        }
+                    }
+                }
+
+                // Создаем объект с данными для передачи
+                var menuData = new
+                {
+                    MenuName = _menuPlan.MenuName,
+                    DaysCount = _menuPlan.DaysCount,
+                    PeopleCount = _menuPlan.PeopleCount,
+                    RecipeNames = recipeNames,
+                    SelectedRecipes = selectedRecipeIds,
+                    RecipeObjects = recipeObjects // Добавляем объекты рецептов
+                };
+
+                var menuPreviewWindow = new MenuPreviewWindow(menuData);
+                menuPreviewWindow.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка отображения меню: {ex.Message}", "Ошибка");
+            }
+        }
+
+        private Dictionary<string, int?> GetSelectedRecipeIds()
+        {
+            var selectedRecipeIds = new Dictionary<string, int?>();
+
+            try
+            {
+                using (var context = new WithIngContext())
+                {
+                    foreach (var recipeEntry in _recipeNames)
+                    {
+                        var recipeName = recipeEntry.Value;
+                        var recipe = context.Рецептыs
+                            .FirstOrDefault(r => r.Название == recipeName);
+
+                        selectedRecipeIds[recipeEntry.Key] = recipe?.IdРецепта;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка получения ID рецептов: {ex.Message}", "Ошибка");
+            }
+
+            return selectedRecipeIds;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -141,8 +258,5 @@ namespace culinary_project_coursework.Windows
             // TODO: Реализовать сохранение в базу данных
             Console.WriteLine("Сохранение меню в базу данных...");
         }
-
-
-
     }
 }

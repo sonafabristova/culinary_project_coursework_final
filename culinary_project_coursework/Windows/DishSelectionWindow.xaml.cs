@@ -1,45 +1,109 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Windows
 {
     public partial class DishSelectionWindow : Window
     {
-        public string SelectedDish { get; private set; }
+        public Рецепты SelectedRecipe { get; private set; }
+        private List<Рецепты> _allRecipes = new List<Рецепты>();
 
         public DishSelectionWindow()
         {
             InitializeComponent();
-            LoadDishes();
+            LoadAllRecipes();
         }
 
-        private void LoadDishes()
+        private void LoadAllRecipes()
         {
-            var dishes = new[]
+            try
             {
-                new { Name = "Овсяная каша с фруктами" },
-                new { Name = "Омлет с овощами" },
-                new { Name = "Блины с творогом" },
-                new { Name = "Салат Цезарь" },
-                new { Name = "Куриный суп" },
-                new { Name = "Гречневая каша с грибами" },
+                // Загружаем все рецепты (системные и пользовательские)
+                _allRecipes.Clear();
+                
+                // Системные рецепты
+                var systemRecipes = AppContext.GetSystemRecipes();
+                _allRecipes.AddRange(systemRecipes);
+                
+                // Пользовательские рецепты (если пользователь авторизован)
+                if (AppContext.CurrentUser != null)
+                {
+                    var userRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.IdПользователя);
+                    _allRecipes.AddRange(userRecipes);
+                }
 
+                // Загружаем в ComboBox все рецепты по умолчанию
+                LoadRecipesToComboBox("all");
+                
+                if (_allRecipes.Count == 0)
+                {
+                    MessageBox.Show("В базе данных нет доступных рецептов", "Информация", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки рецептов: {ex.Message}", "Ошибка", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void LoadRecipesToComboBox(string recipeType)
+        {
+            RecipesComboBox.Items.Clear();
+
+            // Добавляем пустой элемент
+            RecipesComboBox.Items.Add(new ComboBoxItem { 
+                Content = "Выберите рецепт",
+                Tag = "empty"
+            });
+
+            // Фильтруем рецепты по типу
+            IEnumerable<Рецепты> filteredRecipes = recipeType switch
+            {
+                "system" => _allRecipes.Where(r => r.IsSystemRecipe == true),
+                "user" => _allRecipes.Where(r => r.IsSystemRecipe == false),
+                _ => _allRecipes // "all"
             };
 
-            DishesListBox.ItemsSource = dishes;
+            // Добавляем рецепты в ComboBox
+            foreach (var recipe in filteredRecipes.OrderBy(r => r.Название))
+            {
+                RecipesComboBox.Items.Add(recipe);
+            }
+
+            // Выбираем первый элемент (пустой)
+            RecipesComboBox.SelectedIndex = 0;
+        }
+
+        private void RecipeTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RecipeTypeComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+            {
+                string recipeType = selectedItem.Tag.ToString();
+                LoadRecipesToComboBox(recipeType);
+            }
         }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DishesListBox.SelectedItem != null)
+            if (RecipesComboBox.SelectedItem is Рецепты selectedRecipe)
             {
-                var selected = DishesListBox.SelectedItem;
-                SelectedDish = selected.GetType().GetProperty("Name").GetValue(selected).ToString();
+                SelectedRecipe = selectedRecipe;
                 this.DialogResult = true;
                 this.Close();
             }
-            else
+            else if (RecipesComboBox.SelectedItem is ComboBoxItem comboBoxItem)
             {
-                MessageBox.Show("Пожалуйста, выберите блюдо");
+                if (comboBoxItem.Tag?.ToString() == "empty")
+                {
+                    MessageBox.Show("Пожалуйста, выберите рецепт из списка", "Информация", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 

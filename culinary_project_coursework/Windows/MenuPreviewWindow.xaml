@@ -82,6 +82,7 @@
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="120"/>
                                                             <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
 
                                                         <!-- Завтрак -->
@@ -98,10 +99,27 @@
                                                                 Background="#FEF9E7" 
                                                                 BorderBrush="#F7DC6F" 
                                                                 BorderThickness="0">
-                                                            <TextBlock Text="{Binding Breakfast.DishName}" 
-                                                                  Padding="10,8"
-                                                                  VerticalAlignment="Center"
-                                                                  TextWrapping="Wrap"/>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Breakfast}" 
+                                                                      Padding="10,8"
+                                                                      VerticalAlignment="Center"
+                                                                      TextWrapping="Wrap"/>
+                                                                <Button Grid.Column="1"
+                                                                        Content="👁️"
+                                                                        Padding="8,5"
+                                                                        Margin="5"
+                                                                        Tag="{Binding BreakfastRecipe}"
+                                                                        Click="ViewRecipeDetails_Click"
+                                                                        ToolTip="Просмотреть детали рецепта"
+                                                                        Background="Transparent"
+                                                                        BorderThickness="0"
+                                                                        Foreground="#3498DB"
+                                                                        FontSize="14"/>
+                                                            </Grid>
                                                         </Border>
 
                                                         <!-- Обед -->
@@ -118,10 +136,27 @@
                                                                 Background="#E8F8F5" 
                                                                 BorderBrush="#76D7C4" 
                                                                 BorderThickness="0,1,0,0">
-                                                            <TextBlock Text="{Binding Lunch.DishName}" 
-                                                                  Padding="10,8"
-                                                                  VerticalAlignment="Center"
-                                                                  TextWrapping="Wrap"/>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Lunch}" 
+                                                                      Padding="10,8"
+                                                                      VerticalAlignment="Center"
+                                                                      TextWrapping="Wrap"/>
+                                                                <Button Grid.Column="1"
+                                                                        Content="👁️"
+                                                                        Padding="8,5"
+                                                                        Margin="5"
+                                                                        Tag="{Binding LunchRecipe}"
+                                                                        Click="ViewRecipeDetails_Click"
+                                                                        ToolTip="Просмотреть детали рецепта"
+                                                                        Background="Transparent"
+                                                                        BorderThickness="0"
+                                                                        Foreground="#3498DB"
+                                                                        FontSize="14"/>
+                                                            </Grid>
                                                         </Border>
 
                                                         <!-- Ужин -->
@@ -138,10 +173,27 @@
                                                                 Background="#F4ECF7" 
                                                                 BorderBrush="#BB8FCE" 
                                                                 BorderThickness="0,1,0,0">
-                                                            <TextBlock Text="{Binding Dinner.DishName}" 
-                                                                  Padding="10,8"
-                                                                  VerticalAlignment="Center"
-                                                                  TextWrapping="Wrap"/> 
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Dinner}" 
+                                                                      Padding="10,8"
+                                                                      VerticalAlignment="Center"
+                                                                      TextWrapping="Wrap"/>
+                                                                <Button Grid.Column="1"
+                                                                        Content="👁️"
+                                                                        Padding="8,5"
+                                                                        Margin="5"
+                                                                        Tag="{Binding DinnerRecipe}"
+                                                                        Click="ViewRecipeDetails_Click"
+                                                                        ToolTip="Просмотреть детали рецепта"
+                                                                        Background="Transparent"
+                                                                        BorderThickness="0"
+                                                                        Foreground="#3498DB"
+                                                                        FontSize="14"/>
+                                                            </Grid>
                                                         </Border>
                                                     </Grid>
                                                 </StackPanel>

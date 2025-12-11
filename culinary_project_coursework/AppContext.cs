@@ -20,7 +20,7 @@ namespace culinary_project_coursework
 
                 try
                 {
-                    using (var db = new WithIngContext())
+                    using (var db = new BdCourseContext())
                     {
                         return db.Пользователиs
                             .FirstOrDefault(u => u.IdПользователя == CurrentUserId.Value);
@@ -38,7 +38,7 @@ namespace culinary_project_coursework
         }
         public static List<Рецепты> ReloadRecipes()
         {
-            using (var db = new WithIngContext())
+            using (var db = new BdCourseContext())
             {
                 return db.Рецептыs
                     .Include(r => r.CreatedByUser)
@@ -55,7 +55,7 @@ namespace culinary_project_coursework
             {
                 try
                 {
-                    using (var db = new WithIngContext())
+                    using (var db = new BdCourseContext())
                     {
                         return db.Пользователиs
                             .Where(u => u.IsActive == true)
@@ -77,7 +77,7 @@ namespace culinary_project_coursework
             {
                 try
                 {
-                    using (var db = new WithIngContext())
+                    using (var db = new BdCourseContext())
                     {
                         return db.Рецептыs
                             .Include(r => r.CreatedByUser)
@@ -102,15 +102,15 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     return db.Рецептыs
                         .Include(r => r.CreatedByUser)
                         .Include(r => r.СоставБлюдаs)
                             .ThenInclude(s => s.FkИнгредиентаNavigation)
-                                .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)  // Добавлено
+                                .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)
                         .Include(r => r.ШагиПриготовленияs)
-                        .Where(r => r.IsSystemRecipe == true)
+                        .Where(r => r.IsSystemRecipe == true && r.CreatedByUserId == null) // Явно проверяем NULL
                         .ToList();
                 }
             }
@@ -120,13 +120,12 @@ namespace culinary_project_coursework
                 return new List<Рецепты>();
             }
         }
-
         // Исправленный метод для пользовательских рецептов
         public static List<Рецепты> GetUserRecipes(int userId)
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     return db.Рецептыs
                         .Include(r => r.CreatedByUser)
@@ -151,7 +150,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     var user = db.Пользователиs
                         .FirstOrDefault(u => u.Логин == login && u.Пароль == password && u.IsActive == true);
@@ -176,7 +175,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     // Проверка существования пользователя
                     if (db.Пользователиs.Any(u => u.Логин == login))
@@ -213,7 +212,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     // Отслеживаем изменения для отладки
                     db.ChangeTracker.StateChanged += (sender, args) =>
@@ -305,7 +304,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     var recipe = db.Рецептыs.Find(recipeId);
                     if (recipe != null)
@@ -326,7 +325,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     return db.Пользователиs.Any(u => u.Логин == login);
                 }
@@ -342,7 +341,7 @@ namespace culinary_project_coursework
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     var recipes = db.Рецептыs.ToList();
                     var message = $"В БД {recipes.Count} рецептов:\n";
@@ -370,7 +369,7 @@ namespace culinary_project_coursework
         }
         public static Ингредиенты FindOrCreateIngredient(string name)
         {
-            using (var context = new WithIngContext())
+            using (var context = new BdCourseContext())
             {
                 var ingredient = context.Ингредиентыs
                     .FirstOrDefault(i => i.Название.ToLower() == name.ToLower());
