@@ -33,7 +33,7 @@ namespace culinary_project_coursework.Windows
 
                     if (selectedRecipes != null)
                     {
-                        using (var context = new WithIngContext())
+                        using (var context = new BdCourseContext())
                         {
                             var allRecipes = context.Рецептыs.ToList();
 
@@ -142,11 +142,22 @@ namespace culinary_project_coursework.Windows
             try
             {
                 var shoppingList = GenerateShoppingList();
-                ShowShoppingList(shoppingList);
+
+                if (shoppingList.Count == 0)
+                {
+                    MessageBox.Show("Нет выбранных рецептов для создания списка покупок",
+                        "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                // Создаем окно списка покупок с полученными данными
+                var shoppingListWindow = new ShoppingListWindow(shoppingList);
+                shoppingListWindow.Show();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка создания списка покупок: {ex.Message}", "Ошибка");
+                MessageBox.Show($"Ошибка создания списка покупок: {ex.Message}",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -173,7 +184,7 @@ namespace culinary_project_coursework.Windows
                     return shoppingList;
                 }
 
-                using (var context = new WithIngContext())
+                using (var context = new BdCourseContext())
                 {
                     var recipeIds = new List<int>();
                     foreach (var recipeId in selectedRecipes.Values)

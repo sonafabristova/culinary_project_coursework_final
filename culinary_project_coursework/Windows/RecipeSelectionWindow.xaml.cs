@@ -21,7 +21,7 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                using (var db = new WithIngContext())
+                using (var db = new BdCourseContext())
                 {
                     // Загружаем ВСЕ рецепты с зависимостями
                     var recipes = db.Рецептыs
