@@ -27,10 +27,8 @@ namespace culinary_project_coursework.Windows
 
         private void ButtonCreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(BoxLogin.Text) && !string.IsNullOrEmpty(BoxPass.Text) &&
-                !string.IsNullOrEmpty(BoxName.Text) && !string.IsNullOrEmpty(BoxPhoneNumber.Text))
+            if (!string.IsNullOrEmpty(BoxLogin.Text) && !string.IsNullOrEmpty(BoxPass.Text) &&  !string.IsNullOrEmpty(BoxName.Text) && !string.IsNullOrEmpty(BoxPhoneNumber.Text))
             {
-                // Используем новый метод регистрации
                 if (AppContext.RegisterUser(BoxName.Text, BoxLogin.Text, BoxPass.Text, BoxPhoneNumber.Text))
                 {
                     this.DialogResult = true;

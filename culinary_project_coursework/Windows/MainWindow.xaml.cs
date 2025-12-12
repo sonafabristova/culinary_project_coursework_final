@@ -2,27 +2,24 @@
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections.ObjectModel; // ДОБАВИТЬ
+using System.Collections.ObjectModel; 
 using culinary_project_coursework.Models;
 
 namespace culinary_project_coursework.Windows
 {
     public partial class MainWindow : Window
     {
-        // ИЗМЕНИТЬ: Использовать ObservableCollection вместо List
+       
         public ObservableCollection<Рецепты> SystemRecipes { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // ИНИЦИАЛИЗИРОВАТЬ коллекцию ДО установки DataContext
             SystemRecipes = new ObservableCollection<Рецепты>();
 
-            // Установить DataContext
             DataContext = this;
 
-            // Загрузить рецепты
             LoadRecipes();
         }
 

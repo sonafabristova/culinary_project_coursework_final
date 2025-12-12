@@ -23,7 +23,6 @@ namespace culinary_project_coursework.Windows
             {
                 using (var db = new BdCourseContext())
                 {
-                    // Загружаем ВСЕ рецепты с зависимостями
                     var recipes = db.Рецептыs
                         .Include(r => r.CreatedByUser)
                         .Include(r => r.СоставБлюдаs)
@@ -31,34 +30,27 @@ namespace culinary_project_coursework.Windows
                         .Include(r => r.ШагиПриготовленияs)
                         .ToList();
 
-                    // Фильтруем рецепты:
-                    // 1. Все системные рецепты
-                    // 2. Рецепты текущего пользователя
                     var filteredRecipes = new List<Рецепты>();
 
                     foreach (var recipe in recipes)
                     {
-                        // Проверяем, системный ли рецепт
+                       
                         if (recipe.IsSystemRecipe == true)
                         {
-                            // Все системные рецепты всегда показываем
                             filteredRecipes.Add(recipe);
                         }
-                        // Проверяем, принадлежит ли рецепт текущему пользователю
+                       
                         else if (AppContext.CurrentUser != null &&
                                  recipe.CreatedByUserId == AppContext.CurrentUser.IdПользователя)
                         {
-                            // Показываем рецепты текущего пользователя
                             filteredRecipes.Add(recipe);
                         }
                     }
 
-                    // Устанавливаем источник данных для ListBox
+                   
                     RecipesListBox.ItemsSource = filteredRecipes;
 
-                    // Отладочная информация
-                    Console.WriteLine($"Загружено {filteredRecipes.Count} рецептов для выбора");
-                    Console.WriteLine($"Текущий пользователь: {AppContext.CurrentUser?.Имя ?? "Не авторизован"}");
+                   
 
                     if (filteredRecipes.Count == 0)
                     {
@@ -80,12 +72,6 @@ namespace culinary_project_coursework.Windows
             if (RecipesListBox.SelectedItem is Рецепты selectedRecipe)
             {
                 SelectedRecipe = selectedRecipe;
-
-                // Отладочная информация
-                Console.WriteLine($"Выбран рецепт: {selectedRecipe.Название}");
-                Console.WriteLine($"Тип рецепта: {(selectedRecipe.IsSystemRecipe == true ? "Системный" : "Пользовательский")}");
-                Console.WriteLine($"Автор: {selectedRecipe.CreatedByUser?.Имя ?? "Неизвестно"}");
-
                 this.DialogResult = true;
                 this.Close();
             }

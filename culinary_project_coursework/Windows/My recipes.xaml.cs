@@ -9,20 +9,17 @@ namespace culinary_project_coursework.Windows
 {
     public partial class My_recipes : Window
     {
-        // ИЗМЕНИТЬ: Использовать ObservableCollection
+        
         public ObservableCollection<Рецепты> UserRecipes { get; set; }
 
         public My_recipes()
         {
             InitializeComponent();
 
-            // ИНИЦИАЛИЗИРОВАТЬ коллекцию
             UserRecipes = new ObservableCollection<Рецепты>();
 
-            // Установить DataContext
             DataContext = this;
 
-            // Загрузить рецепты
             LoadRecipes();
         }
 
@@ -30,12 +27,10 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                // Получаем рецепты текущего пользователя ИЗ БАЗЫ ДАННЫХ
                 if (AppContext.CurrentUser != null)
                 {
                     var recipes = AppContext.GetUserRecipes(AppContext.CurrentUser.IdПользователя);
 
-                    // Очистить и заполнить коллекцию
                     UserRecipes.Clear();
                     foreach (var recipe in recipes)
                     {
@@ -89,17 +84,16 @@ namespace culinary_project_coursework.Windows
             {
                 try
                 {
-                    // Устанавливаем автора рецепта
                     addWindow.NewRecipe.CreatedByUserId = AppContext.CurrentUser?.IdПользователя;
                     addWindow.NewRecipe.IsSystemRecipe = false;
 
-                    // Добавляем рецепт в базу данных
+                    
                     AppContext.AddRecipe(addWindow.NewRecipe);
 
-                    // Обновляем список
+                   
                     if (AppContext.CurrentUser != null)
                     {
-                        // Перезагружаем рецепты из БД
+                        
                         var recipes = AppContext.GetUserRecipes(AppContext.CurrentUser.IdПользователя);
                         UserRecipes.Clear();
                         foreach (var recipe in recipes)
@@ -133,10 +127,8 @@ namespace culinary_project_coursework.Windows
                 {
                     try
                     {
-                        // Удаляем рецепт из базы данных
                         AppContext.DeleteRecipe(selectedRecipe.IdРецепта);
 
-                        // Удаляем из коллекции
                         UserRecipes.Remove(selectedRecipe);
 
                         MessageBox.Show("Рецепт успешно удален!", "Успех",

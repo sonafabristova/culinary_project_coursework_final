@@ -29,7 +29,6 @@ namespace culinary_project_coursework.Windows
 
             TitleTextBlock.Text = _menuPlan.MenuName;
 
-            // Создаем структуру дней и людей
             for (int day = 1; day <= daysCount; day++)
             {
                 var dayModel = new MenuDay
@@ -53,32 +52,32 @@ namespace culinary_project_coursework.Windows
             DaysItemsControl.ItemsSource = _menuPlan.Days;
         }
 
-        private async void SelectBreakfast_Click(object sender, RoutedEventArgs e)
+        private void SelectBreakfast_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var personId = button.Tag.ToString();
-            await SelectRecipeForMeal(personId, "breakfast", button);
+            SelectRecipeForMeal(personId, "breakfast", button);
         }
 
-        private async void SelectLunch_Click(object sender, RoutedEventArgs e)
+        private void SelectLunch_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var personId = button.Tag.ToString();
-            await SelectRecipeForMeal(personId, "lunch", button);
+            SelectRecipeForMeal(personId, "lunch", button);
         }
 
-        private async void SelectDinner_Click(object sender, RoutedEventArgs e)
+        private void SelectDinner_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var personId = button.Tag.ToString();
-            await SelectRecipeForMeal(personId, "dinner", button);
+            SelectRecipeForMeal(personId, "dinner", button);
         }
 
-        private async System.Threading.Tasks.Task SelectRecipeForMeal(string personId, string mealType, Button button)
+        private void SelectRecipeForMeal(string personId, string mealType, Button button)
         {
             try
             {
-                // Показываем окно выбора рецепта
+               
                 var recipeSelectionWindow = new RecipeSelectionWindow
                 {
                     Owner = this,
@@ -90,19 +89,15 @@ namespace culinary_project_coursework.Windows
                 if (result == true && recipeSelectionWindow.SelectedRecipe != null)
                 {
                     var selectedRecipe = recipeSelectionWindow.SelectedRecipe;
-
-                    // Обновляем кнопку с названием выбранного рецепта
                     UpdateButtonWithRecipe(button, selectedRecipe.Название);
 
                     // Сохраняем в словарь
                     var key = $"{personId}-{mealType}";
                     _recipeNames[key] = selectedRecipe.Название;
 
-                    // Также сохраняем в MenuPlan
                     UpdateMenuPlanWithRecipe(personId, mealType, selectedRecipe.Название);
 
-                    MessageBox.Show($"Выбрано: {selectedRecipe.Название}\nДля: {mealType}",
-                        "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+                   
                 }
             }
             catch (Exception ex)
@@ -110,7 +105,6 @@ namespace culinary_project_coursework.Windows
                 MessageBox.Show($"Ошибка выбора рецепта: {ex.Message}", "Ошибка");
             }
         }
-
         private void UpdateButtonWithRecipe(Button button, string recipeName)
         {
             // Обновляем содержимое кнопки
@@ -144,7 +138,6 @@ namespace culinary_project_coursework.Windows
                             break;
                     }
 
-                    // Обновляем отображение
                     DaysItemsControl.Items.Refresh();
                 }
             }
@@ -176,9 +169,8 @@ namespace culinary_project_coursework.Windows
                 // Получаем ID рецептов
                 var selectedRecipeIds = new Dictionary<string, int?>();
                 var recipeNames = new Dictionary<string, string>();
-                var recipeObjects = new Dictionary<string, Рецепты>();
 
-                using (var context = new WithIngContext())
+                using (var context = new BdCourseContext())
                 {
                     foreach (var entry in _recipeNames)
                     {
@@ -190,11 +182,13 @@ namespace culinary_project_coursework.Windows
                         if (recipe != null)
                         {
                             selectedRecipeIds[entry.Key] = recipe.IdРецепта;
-                            recipeObjects[entry.Key] = recipe;
+
+                            
                         }
                         else
                         {
                             selectedRecipeIds[entry.Key] = null;
+                            MessageBox.Show($"Рецепт '{entry.Value}' не найден в БД", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
                 }
@@ -206,8 +200,7 @@ namespace culinary_project_coursework.Windows
                     DaysCount = _menuPlan.DaysCount,
                     PeopleCount = _menuPlan.PeopleCount,
                     RecipeNames = recipeNames,
-                    SelectedRecipes = selectedRecipeIds,
-                    RecipeObjects = recipeObjects // Добавляем объекты рецептов
+                    SelectedRecipes = selectedRecipeIds  
                 };
 
                 var menuPreviewWindow = new MenuPreviewWindow(menuData);
@@ -220,31 +213,7 @@ namespace culinary_project_coursework.Windows
             }
         }
 
-        private Dictionary<string, int?> GetSelectedRecipeIds()
-        {
-            var selectedRecipeIds = new Dictionary<string, int?>();
-
-            try
-            {
-                using (var context = new WithIngContext())
-                {
-                    foreach (var recipeEntry in _recipeNames)
-                    {
-                        var recipeName = recipeEntry.Value;
-                        var recipe = context.Рецептыs
-                            .FirstOrDefault(r => r.Название == recipeName);
-
-                        selectedRecipeIds[recipeEntry.Key] = recipe?.IdРецепта;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка получения ID рецептов: {ex.Message}", "Ошибка");
-            }
-
-            return selectedRecipeIds;
-        }
+     
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
@@ -255,7 +224,7 @@ namespace culinary_project_coursework.Windows
 
         private void SaveMenuToDatabase()
         {
-            // TODO: Реализовать сохранение в базу данных
+           
             Console.WriteLine("Сохранение меню в базу данных...");
         }
     }

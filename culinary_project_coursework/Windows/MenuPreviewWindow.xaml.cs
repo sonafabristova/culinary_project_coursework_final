@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using culinary_project_coursework.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace culinary_project_coursework.Windows
 {
@@ -85,12 +86,12 @@ namespace culinary_project_coursework.Windows
                     {
                         var personId = $"{day}-{person}";
 
-                        // Получаем названия рецептов
+                        //  названия рецептов
                         string breakfast = "Не выбрано";
                         string lunch = "Не выбрано";
                         string dinner = "Не выбрано";
 
-                        // Получаем объекты рецептов
+                        //  объекты рецептов
                         Рецепты breakfastRecipe = null;
                         Рецепты lunchRecipe = null;
                         Рецепты dinnerRecipe = null;
@@ -106,7 +107,7 @@ namespace culinary_project_coursework.Windows
                             recipeNames.TryGetValue(dinnerKey, out dinner);
                         }
 
-                        // Получаем рецепты из кеша
+                        // получаем рецепты -
                         _recipeCache.TryGetValue(breakfastKey, out breakfastRecipe);
                         _recipeCache.TryGetValue(lunchKey, out lunchRecipe);
                         _recipeCache.TryGetValue(dinnerKey, out dinnerRecipe);
@@ -150,7 +151,6 @@ namespace culinary_project_coursework.Windows
                     return;
                 }
 
-                // Создаем окно списка покупок с полученными данными
                 var shoppingListWindow = new ShoppingListWindow(shoppingList);
                 shoppingListWindow.Show();
             }
@@ -184,7 +184,7 @@ namespace culinary_project_coursework.Windows
                     return shoppingList;
                 }
 
-                using (var context = new BdCourseContext())
+                using (var context = new BdCourseContext()) 
                 {
                     var recipeIds = new List<int>();
                     foreach (var recipeId in selectedRecipes.Values)
@@ -198,25 +198,31 @@ namespace culinary_project_coursework.Windows
                     if (recipeIds.Count == 0)
                         return shoppingList;
 
+                    
                     var allIngredients = context.СоставБлюдаs
+                        .Include(s => s.FkИнгредиентаNavigation)
+                            .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)
                         .Where(s => recipeIds.Contains(s.FkРецепта))
                         .ToList();
 
+
                     foreach (var ingredient in allIngredients)
                     {
-                        string ingredientName = "Неизвестно";
-                        var ing = context.Ингредиентыs
-                            .FirstOrDefault(i => i.IdИнгредиента == ingredient.FkИнгредиента);
-
-                        if (ing != null && !string.IsNullOrEmpty(ing.Название))
-                            ingredientName = ing.Название;
-
+                        string ingredientName = ingredient.FkИнгредиентаNavigation?.Название ?? "Неизвестно";
                         decimal quantity = ingredient.Количество;
 
-                        if (shoppingList.ContainsKey(ingredientName))
-                            shoppingList[ingredientName] += quantity;
+                        string unit = ingredient.FkИнгредиентаNavigation?.FkЕдиницыИзмеренияNavigation?.Название ?? "г";
+
+                        string key = $"{ingredientName} ({unit})";
+
+                        if (shoppingList.ContainsKey(key))
+                        {
+                            shoppingList[key] += quantity;
+                        }
                         else
-                            shoppingList[ingredientName] = quantity;
+                        {
+                            shoppingList[key] = quantity;
+                        }
                     }
                 }
             }
@@ -227,23 +233,7 @@ namespace culinary_project_coursework.Windows
 
             return shoppingList;
         }
-
-        private void ShowShoppingList(Dictionary<string, decimal> shoppingList)
-        {
-            if (shoppingList.Count == 0)
-            {
-                MessageBox.Show("Список покупок пуст", "Информация");
-                return;
-            }
-
-            string listText = "СПИСОК ПОКУПОК:\n\n";
-            foreach (var item in shoppingList.OrderBy(i => i.Key))
-            {
-                listText += $"{item.Key}: {item.Value:0.##} г\n";
-            }
-
-            MessageBox.Show(listText, "Список покупок", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+       
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
@@ -263,7 +253,6 @@ namespace culinary_project_coursework.Windows
             }
         }
 
-        // Обработчик клика для просмотра деталей рецепта
 
         private void ViewRecipeDetails_Click(object sender, RoutedEventArgs e)
         {

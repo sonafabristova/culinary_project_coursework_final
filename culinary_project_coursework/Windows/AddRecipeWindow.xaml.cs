@@ -59,7 +59,7 @@ namespace culinary_project_coursework.Windows
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Проверка обязательных полей
+           
             if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
                 MessageBox.Show("Введите название рецепта", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -78,7 +78,7 @@ namespace culinary_project_coursework.Windows
                 return;
             }
 
-            // Создаем новый рецепт (ID будет сгенерирован БД)
+            // Создаем новый рецепт 
             NewRecipe = new Рецепты
             {
                 Название = NameTextBox.Text.Trim(),
@@ -92,11 +92,11 @@ namespace culinary_project_coursework.Windows
                 IsSystemRecipe = false
             };
 
-            // Инициализируем коллекции
+           
             NewRecipe.СоставБлюдаs = new List<СоставБлюда>();
             NewRecipe.ШагиПриготовленияs = new List<ШагиПриготовления>();
 
-            // Добавляем ингредиенты
+            // + ингредиенты
             foreach (var ingredientInput in Ingredients.Where(i => !string.IsNullOrWhiteSpace(i.Name)))
             {
                 var ingredient = AppContext.FindOrCreateIngredient(ingredientInput.Name);
@@ -113,7 +113,7 @@ namespace culinary_project_coursework.Windows
                 }
             }
 
-            // Добавляем шаги приготовления
+            // + шаги приготовления
             foreach (var stepInput in Steps.Where(s => !string.IsNullOrWhiteSpace(s.Description)))
             {
                 NewRecipe.ШагиПриготовленияs.Add(new ШагиПриготовления
@@ -134,7 +134,7 @@ namespace culinary_project_coursework.Windows
         }
     }
 
-    // Вспомогательные классы для ввода данных
+    //  классы для ввода данных
     public class IngredientInput
     {
         public string Name { get; set; } = "";

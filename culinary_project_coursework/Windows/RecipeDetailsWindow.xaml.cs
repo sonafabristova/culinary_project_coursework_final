@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.IO;
 using culinary_project_coursework.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,9 +20,11 @@ namespace culinary_project_coursework.Windows
 
         private void LoadRecipeData(Рецепты recipe)
         {
-            // Устанавливаем заголовок окна и название рецепта
             this.Title = $"Рецепт - {recipe.Название}";
             TitleText.Text = recipe.Название;
+
+            // Загружаем изображение рецепта
+            LoadRecipeImage(recipe.Изображение);
 
             // БЖУ и калории
             ProteinsText.Text = $"{recipe.Белки?.ToString("0.##") ?? "0"}г";
@@ -30,30 +34,6 @@ namespace culinary_project_coursework.Windows
 
             // Время приготовления
             TimeText.Text = $"{recipe.ВремяПриготовления} минут";
-
-            // ОТЛАДКА: Показываем информацию в MessageBox
-            string debugInfo = $"Рецепт: {recipe.Название}\n";
-            debugInfo += $"ID рецепта: {recipe.IdРецепта}\n";
-            debugInfo += $"СоставБлюдаs != null: {recipe.СоставБлюдаs != null}\n";
-            debugInfo += $"Количество ингредиентов: {recipe.СоставБлюдаs?.Count ?? 0}\n\n";
-
-            if (recipe.СоставБлюдаs != null && recipe.СоставБлюдаs.Any())
-            {
-                debugInfo += "Ингредиенты:\n";
-                foreach (var ingredient in recipe.СоставБлюдаs.Take(3)) // Первые 3
-                {
-                    debugInfo += $"- {ingredient.FkИнгредиентаNavigation?.Название ?? "Без названия"}: " +
-                                $"{ingredient.Количество} " +
-                                $"{ingredient.FkИнгредиентаNavigation?.FkЕдиницыИзмеренияNavigation?.Название ?? ""}\n";
-                }
-            }
-            else
-            {
-                debugInfo += "Нет ингредиентов!";
-            }
-
-            // Показываем отладочную информацию
-            MessageBox.Show(debugInfo, "Отладка загрузки рецепта", MessageBoxButton.OK, MessageBoxImage.Information);
 
             // Ингредиенты
             if (recipe.СоставБлюдаs != null && recipe.СоставБлюдаs.Any())
@@ -68,22 +48,14 @@ namespace culinary_project_coursework.Windows
                     })
                     .ToList();
 
-                // Показываем, что попадает в список
-                string listDebug = $"Будет отображено {ingredientsData.Count} ингредиентов:\n";
-                foreach (var item in ingredientsData)
-                {
-                    listDebug += $"- {item.Name}: {item.Amount}\n";
-                }
-                MessageBox.Show(listDebug, "Отладка списка ингредиентов", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 IngredientsList.ItemsSource = ingredientsData;
             }
             else
             {
                 IngredientsList.ItemsSource = new List<RecipeIngredientDisplay>
-        {
-            new RecipeIngredientDisplay { Name = "Нет информации об ингредиентах", Amount = "" }
-        };
+                {
+                    new RecipeIngredientDisplay { Name = "Нет информации об ингредиентах", Amount = "" }
+                };
             }
 
             // Шаги приготовления
@@ -101,31 +73,61 @@ namespace culinary_project_coursework.Windows
             }
         }
 
+        private void LoadRecipeImage(string relativePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(relativePath))
+                {
+                    RecipeImage.Source = null;
+                    return;
+                }
+
+                
+                string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+
+                DirectoryInfo dir = new DirectoryInfo(exeDir);
+                string projectRoot = dir.Parent?.Parent?.Parent?.FullName;
+
+                string fullPath = Path.Combine(projectRoot, relativePath.Replace("/", "\\"));
+
+
+                if (File.Exists(fullPath))
+                {
+                    RecipeImage.Source = new BitmapImage(new Uri(fullPath));
+                   
+                }
+                else
+                {
+                    RecipeImage.Source = null;
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                RecipeImage.Source = null;
+               
+            }
+        }
+
         private string FormatIngredientAmount(decimal amount, string unit)
         {
-            // Простая проверка - целое ли число
             if (amount == Math.Truncate(amount))
             {
-                // Целое число
                 return $"{(int)amount} {unit}";
             }
             else
             {
-                // Дробное число, убираем лишние нули
                 return $"{amount:0.##} {unit}";
             }
         }
-       
 
-        // Альтернативный вариант для nullable decimal
-        
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
     }
 
-    // Вспомогательный класс для отображения ингредиентов
     public class RecipeIngredientDisplay
     {
         public string Name { get; set; }

@@ -23,20 +23,22 @@
                       TextWrapping="Wrap"/>
 
             <!-- Фото готового блюда -->
-            <Border BorderBrush="LightGray" 
-                    BorderThickness="1" 
-                    Background="#F8F9FA"
-                    Height="200"
-                    Margin="0,0,0,20"
-                    HorizontalAlignment="Center"
-                    Width="400">
-                <TextBlock Text="Фото готового блюда"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Center"
-                          Foreground="Gray"
-                          />
-            </Border>
+            <Border  
+                BorderThickness="1" 
+       
+                Height="200"
+                Margin="0,0,0,20"
+                HorizontalAlignment="Center"
+                Width="400">
 
+                <Image x:Name="RecipeImage"
+                   Stretch="Uniform"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   MaxHeight="200"
+                   MaxWidth="400"/>
+            </Border>
+            
             <!-- БЖУ и калории -->
             <Grid Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>

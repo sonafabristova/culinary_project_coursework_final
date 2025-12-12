@@ -14,7 +14,7 @@ namespace culinary_project_coursework.Windows
         {
             base.OnStartup(e);
 
-            // Тест подключения к БД
+          
             TestDatabaseConnection();
 
             Autor authWindow = new Autor();
@@ -27,7 +27,7 @@ namespace culinary_project_coursework.Windows
             {
                 using (var db = new WithIngContext())
                 {
-                    // Проверяем, можем ли подключиться к базе
+          
                     bool canConnect = db.Database.CanConnect();
 
                     if (canConnect)
@@ -35,8 +35,6 @@ namespace culinary_project_coursework.Windows
                         var userCount = db.Пользователиs.Count();
                         var recipeCount = db.Рецептыs.Count();
 
-                        Console.WriteLine($"Подключение успешно! Пользователей: {userCount}, Рецептов: {recipeCount}");
-                        MessageBox.Show($"Подключение к БД успешно!\nПользователей: {userCount}\nРецептов: {recipeCount}");
                     }
                     else
                     {

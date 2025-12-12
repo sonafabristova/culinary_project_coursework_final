@@ -17,7 +17,6 @@ namespace culinary_project_coursework.Windows
         private MenuPlan _menuPlan;
         private ShoppingItem _selectedItem;
 
-        // Конструктор для MenuPlan (старый)
         public ShoppingListWindow(MenuPlan menuPlan)
         {
             InitializeComponent();
@@ -26,7 +25,6 @@ namespace culinary_project_coursework.Windows
             SetupItemSelection();
         }
 
-        // Новый конструктор для Dictionary<string, decimal>
         public ShoppingListWindow(Dictionary<string, decimal> ingredients)
         {
             InitializeComponent();
@@ -36,17 +34,16 @@ namespace culinary_project_coursework.Windows
 
         private void SetupItemSelection()
         {
-            // Простой подход: используем Tag свойство Border для хранения ссылки на Border
             Loaded += (s, e) =>
             {
-                // После загрузки окна, подписываемся на события кликов
+                
                 SubscribeToItemClicks();
             };
         }
 
         private void SubscribeToItemClicks()
         {
-            // Находим все Border элементы и подписываемся на клики
+            
             var borders = FindBordersInItemsControl();
             foreach (var border in borders)
             {
@@ -58,13 +55,13 @@ namespace culinary_project_coursework.Windows
         {
             var borders = new List<Border>();
 
-            // Простой поиск Border элементов на первом уровне вложенности
+          
             for (int i = 0; i < ProductsItemsControl.Items.Count; i++)
             {
                 var container = ProductsItemsControl.ItemContainerGenerator.ContainerFromIndex(i);
                 if (container != null)
                 {
-                    // Ищем Border среди дочерних элементов
+                    
                     var border = FindFirstBorder(container);
                     if (border != null)
                     {
@@ -89,7 +86,6 @@ namespace culinary_project_coursework.Windows
                     return border;
                 }
 
-                // Ищем дальше только если это не FrameworkElement с DataContext
                 if (!(child is FrameworkElement))
                 {
                     var childBorder = FindFirstBorder(child);
@@ -107,10 +103,9 @@ namespace culinary_project_coursework.Windows
         {
             if (sender is Border border && border.DataContext is ShoppingItem item)
             {
-                // Сбрасываем выделение у всех Border элементов
+                
                 ResetAllBorderBackgrounds();
 
-                // Выделяем текущий элемент
                 border.Background = System.Windows.Media.Brushes.LightBlue;
                 _selectedItem = item;
             }
@@ -118,7 +113,7 @@ namespace culinary_project_coursework.Windows
 
         private void ResetAllBorderBackgrounds()
         {
-            // Сбрасываем фон у всех Border элементов
+            
             for (int i = 0; i < ProductsItemsControl.Items.Count; i++)
             {
                 var container = ProductsItemsControl.ItemContainerGenerator.ContainerFromIndex(i);
@@ -137,14 +132,14 @@ namespace culinary_project_coursework.Windows
         {
             _shoppingItems = new ObservableCollection<ShoppingItem>();
 
-            // Генерируем список только если есть выбранные блюда
+           
             if (HasSelectedDishes())
             {
                 GenerateShoppingListFromMenu();
             }
             else
             {
-                // Если блюда не выбраны, показываем сообщение
+                
                 _shoppingItems.Add(new ShoppingItem
                 {
                     ProductName = "Сначала выберите блюда в меню",
@@ -163,11 +158,10 @@ namespace culinary_project_coursework.Windows
             {
                 foreach (var item in ingredients.OrderBy(i => i.Key))
                 {
-                    // Разбираем строку с единицей измерения
                     var productName = item.Key;
                     string quantityText = $"{item.Value:0.##}";
 
-                    // Если в ключе есть единица измерения в скобках
+                 
                     if (item.Key.Contains('(') && item.Key.Contains(')'))
                     {
                         int start = item.Key.IndexOf('(') + 1;
@@ -205,7 +199,7 @@ namespace culinary_project_coursework.Windows
             if (_menuPlan == null || _menuPlan.Days == null)
                 return false;
 
-            // Проверяем, есть ли хотя бы одно выбранное блюдо во всем меню
+            
             foreach (var day in _menuPlan.Days)
             {
                 if (day.People == null) continue;
@@ -290,8 +284,6 @@ namespace culinary_project_coursework.Windows
         private void AddProductButton_Click(object sender, RoutedEventArgs e)
         {
             _shoppingItems.Add(new ShoppingItem { ProductName = "Новый продукт", Quantity = "1 шт" });
-
-            // После добавления нового элемента нужно обновить подписки на события
             SubscribeToItemClicks();
         }
 
@@ -377,7 +369,7 @@ namespace culinary_project_coursework.Windows
 
                 writer.WriteLine();
                 writer.WriteLine($"Всего продуктов: {index - 1}");
-                writer.WriteLine("=".PadRight(50, '='));
+                
             }
         }
 
@@ -392,7 +384,6 @@ namespace culinary_project_coursework.Windows
         }
     }
 
-    // Класс ShoppingItem
     public class ShoppingItem
     {
         public string ProductName { get; set; }

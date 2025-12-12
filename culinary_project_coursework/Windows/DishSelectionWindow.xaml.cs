@@ -22,21 +22,20 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                // Загружаем все рецепты (системные и пользовательские)
+                
                 _allRecipes.Clear();
                 
                 // Системные рецепты
                 var systemRecipes = AppContext.GetSystemRecipes();
                 _allRecipes.AddRange(systemRecipes);
                 
-                // Пользовательские рецепты (если пользователь авторизован)
+                // Пользовательские рецепты 
                 if (AppContext.CurrentUser != null)
                 {
                     var userRecipes = AppContext.GetUserRecipes(AppContext.CurrentUser.IdПользователя);
                     _allRecipes.AddRange(userRecipes);
                 }
 
-                // Загружаем в ComboBox все рецепты по умолчанию
                 LoadRecipesToComboBox("all");
                 
                 if (_allRecipes.Count == 0)
@@ -62,7 +61,6 @@ namespace culinary_project_coursework.Windows
                 Tag = "empty"
             });
 
-            // Фильтруем рецепты по типу
             IEnumerable<Рецепты> filteredRecipes = recipeType switch
             {
                 "system" => _allRecipes.Where(r => r.IsSystemRecipe == true),
@@ -70,13 +68,11 @@ namespace culinary_project_coursework.Windows
                 _ => _allRecipes // "all"
             };
 
-            // Добавляем рецепты в ComboBox
             foreach (var recipe in filteredRecipes.OrderBy(r => r.Название))
             {
                 RecipesComboBox.Items.Add(recipe);
             }
 
-            // Выбираем первый элемент (пустой)
             RecipesComboBox.SelectedIndex = 0;
         }
 

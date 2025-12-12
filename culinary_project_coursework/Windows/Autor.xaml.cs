@@ -32,7 +32,7 @@ namespace culinary_project_coursework.Windows
 
                 if (user != null)
                 {
-                    // Просто создаем MainWindow - CurrentUser уже установлен в AuthenticateUser
+                    
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
                     this.Close();

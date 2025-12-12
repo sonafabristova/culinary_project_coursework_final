@@ -217,7 +217,6 @@ namespace culinary_project_coursework
                     // Отслеживаем изменения для отладки
                     db.ChangeTracker.StateChanged += (sender, args) =>
                     {
-                        Console.WriteLine("Обнаружены изменения в трекере");
                     };
 
                     // Добавляем рецепт
@@ -226,16 +225,14 @@ namespace culinary_project_coursework
                     // Пробуем сохранить
                     int changes = db.SaveChanges();
 
-                    MessageBox.Show($"Рецепт успешно добавлен! Изменений: {changes}",
+                    MessageBox.Show($"Рецепт успешно добавлен!",
                         "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (DbUpdateException dbEx)
             {
-                // Детальная информация об ошибке БД
-                string errorDetails = GetDbErrorDetails(dbEx);
 
-                MessageBox.Show($"Ошибка БД при добавлении рецепта:\n\n{errorDetails}",
+                MessageBox.Show($"Ошибка БД при добавлении рецепта",
                     "Ошибка БД", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
@@ -257,48 +254,8 @@ namespace culinary_project_coursework
             }
         }
 
-        // Метод для получения детальной информации об ошибке БД
-        private static string GetDbErrorDetails(DbUpdateException dbEx)
-        {
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine($"Тип ошибки: {dbEx.GetType().Name}");
-            sb.AppendLine($"Сообщение: {dbEx.Message}");
 
-            if (dbEx.InnerException != null)
-            {
-                sb.AppendLine($"\nВнутренняя ошибка: {dbEx.InnerException.Message}");
-
-                // Пробуем получить детали SQL ошибки
-                var sqlEx = dbEx.InnerException as Microsoft.Data.SqlClient.SqlException;
-                if (sqlEx != null)
-                {
-                    sb.AppendLine($"\nSQL Ошибка #{sqlEx.Number}: {sqlEx.Message}");
-
-                    foreach (Microsoft.Data.SqlClient.SqlError error in sqlEx.Errors)
-                    {
-                        sb.AppendLine($"- Ошибка #{error.Number}: {error.Message}");
-                        sb.AppendLine($"  Процедура: {error.Procedure}, Строка: {error.LineNumber}");
-                    }
-                }
-            }
-
-            // Информация о сущностях, вызвавших ошибку
-            sb.AppendLine("\nСущности с ошибками:");
-            foreach (var entry in dbEx.Entries)
-            {
-                sb.AppendLine($"- Тип: {entry.Entity.GetType().Name}, Состояние: {entry.State}");
-
-                if (entry.State == EntityState.Added)
-                {
-                    foreach (var property in entry.Properties)
-                    {
-                        sb.AppendLine($"  {property.Metadata.Name} = {property.CurrentValue ?? "NULL"}");
-                    }
-                }
-            }
-
-            return sb.ToString();
-        }
+       
         // Удаление рецепта
         public static void DeleteRecipe(int recipeId)
         {
@@ -336,37 +293,7 @@ namespace culinary_project_coursework
             }
         }
 
-        // Метод для проверки данных в БД (отладка)
-        public static void CheckDatabase()
-        {
-            try
-            {
-                using (var db = new BdCourseContext())
-                {
-                    var recipes = db.Рецептыs.ToList();
-                    var message = $"В БД {recipes.Count} рецептов:\n";
-
-                    foreach (var recipe in recipes)
-                    {
-                        var stepsCount = db.ШагиПриготовленияs.Count(s => s.FkРецепта == recipe.IdРецепта);
-                        message += $"- {recipe.Название} (ID: {recipe.IdРецепта}, Шагов: {stepsCount})\n";
-                    }
-
-                    MessageBox.Show(message, "Проверка БД");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка: {ex.Message}");
-            }
-        }
-
-        // Метод для принудительного обновления данных
-        public static void RefreshData()
-        {
-            // Создаем новый контекст для следующего запроса
-            Console.WriteLine("Данные обновлены");
-        }
+        
         public static Ингредиенты FindOrCreateIngredient(string name)
         {
             using (var context = new BdCourseContext())
