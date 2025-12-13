@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:culinary_project_coursework.Controls"
         Title="Выбор рецепта" 
-        Height="600" 
-        Width="800"
+        Height="650" 
+        Width="850"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        Background="#FFF8F0">
 
-    <Grid Margin="10">
+    <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -16,60 +17,71 @@
         </Grid.RowDefinitions>
 
         <!-- Заголовок -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Выберите рецепт" 
-                       FontSize="20" 
-                       FontWeight="Bold"
-                       Foreground="#2c3e50"/>
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="🍳 Выбор рецепта" 
+                           FontSize="24" 
+                           FontWeight="SemiBold"
+                           Foreground="#8B4513"/>
+                <Border Height="3" 
+                        Width="200" 
+                        Background="#DEB887" 
+                        Margin="0,5,0,0"/>
+            </StackPanel>
 
             <!-- Информация о фильтрации -->
             <TextBlock Name="FilterInfoText" 
-                       FontSize="12" 
-                       Foreground="Gray"
-                       Margin="0,5,0,0"/>
+                       FontSize="14" 
+                       Foreground="#8B4513"
+                       Margin="0,10,0,0"
+                       HorizontalAlignment="Center"
+                       FontStyle="Italic"/>
         </StackPanel>
 
-        <!-- Список рецептов с использованием UserControl -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ListBox Name="RecipesListBox" 
-                     Background="Transparent"
-                     BorderThickness="0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <!-- Список рецептов -->
+        <Border Grid.Row="1" 
+                Background="White"
+                BorderBrush="#DEB887"
+                BorderThickness="2"
+                Padding="5">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ListBox Name="RecipesListBox" 
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <!-- Используем готовый UserControl для отображения рецепта -->
-                        <controls:RecipeControl Margin="0,0,0,5"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:RecipeControl Margin="0,0,0,10"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0,2,0,2"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#e8f4f8"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-
-                <ListBox.Template>
-                    <ControlTemplate>
-                        <ItemsPresenter/>
-                    </ControlTemplate>
-                </ListBox.Template>
-            </ListBox>
-        </ScrollViewer>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,5,0,5"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#FFF0E0"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFFDF8"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </ScrollViewer>
+        </Border>
 
         <!-- Кнопки действий -->
         <Border Grid.Row="2" 
-                BorderBrush="LightGray" 
-                BorderThickness="0,1,0,0" 
-                Padding="0,10,0,0">
+                Background="White"
+                BorderBrush="#DEB887" 
+                BorderThickness="0,2,0,0" 
+                Padding="15,15,15,10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -77,34 +89,42 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Информация о количестве рецептов -->
-                <TextBlock Grid.Column="0"
-                           VerticalAlignment="Center"
-                           Margin="10,0,0,0"
-                           FontSize="12"
-                           Foreground="Gray"
-                           Name="RecipeCountText"/>
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="📊"
+                               FontSize="16"
+                               Margin="0,0,8,0"/>
+                    <TextBlock Name="RecipeCountText"
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               Foreground="#8B4513"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
 
                 <!-- Кнопки -->
                 <StackPanel Grid.Column="1" 
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right">
-                    <Button Content="Выбрать" 
+                    <Button Content="✅ Выбрать" 
                             Click="SelectButton_Click" 
-                            Padding="20,8"
-                            Margin="0,0,10,0"
-                            Background="#3498db"
+                            Padding="25,12"
+                            Margin="0,0,15,0"
+                            Background="#FF7F50"
                             Foreground="White"
-                            FontWeight="Bold"
-                            MinWidth="100"
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            MinWidth="120"
                             Cursor="Hand"/>
 
-                    <Button Content="Отмена" 
+                    <Button Content="❌ Отмена" 
                             Click="CancelButton_Click" 
-                            Padding="20,8"
-                            Background="#95a5a6"
+                            Padding="25,12"
+                            Background="#8B7355"
                             Foreground="White"
-                            FontWeight="Bold"
-                            MinWidth="100"
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            MinWidth="120"
                             Cursor="Hand"/>
                 </StackPanel>
             </Grid>

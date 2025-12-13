@@ -8,46 +8,59 @@
         WindowStyle="None"
         Title="Добавить новый рецепт" 
         WindowStartupLocation="CenterOwner"
-        Background="White">
+        Background="#FFF8F0">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20">
+        <StackPanel Margin="25">
 
             <!-- Заголовок -->
-            <TextBlock Text="Добавить новый рецепт" 
-                      FontSize="24" 
-                      FontWeight="Bold" 
-                      TextAlignment="Center"
-                      Foreground="#2C3E50"
-                      Margin="0,0,0,20"/>
+            <StackPanel HorizontalAlignment="Center" 
+                        Margin="0,0,0,25">
+                <TextBlock Text="➕ Добавить новый рецепт" 
+                          FontSize="28" 
+                          FontWeight="SemiBold" 
+                          Foreground="#8B4513"/>
+                <Border Height="3" 
+                        Width="300" 
+                        Background="#DEB887" 
+                        Margin="0,8,0,0"/>
+            </StackPanel>
 
             <!-- Название рецепта -->
             <TextBlock Text="Название рецепта:" 
+                      FontSize="16"
                       FontWeight="SemiBold"
-                      Margin="0,0,0,5"/>
-            <TextBox x:Name="NameTextBox" 
-                    FontSize="14"
-                    Padding="10"
-                    Margin="0,0,0,20"/>
+                      Foreground="#8B4513"
+                      Margin="0,0,0,8"/>
+            <Border Background="White"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2"
+                    Padding="2"
+                    Margin="0,0,0,25">
+                <TextBox x:Name="NameTextBox" 
+                        FontSize="15"
+                        Padding="12,10"
+                        Background="White"
+                        BorderThickness="0"/>
+            </Border>
 
             <!-- Фото готового блюда -->
             <Border x:Name="PhotoBorder" 
-                    BorderBrush="LightGray" 
-                    BorderThickness="1" 
-                    Background="#F8F9FA"
-                    Height="150"
-                    Margin="0,0,0,20"
+                    BorderBrush="#DEB887" 
+                    BorderThickness="2" 
+                    Background="#FFFDF8"
+                    Height="180"
+                    Margin="0,0,0,25"
                     HorizontalAlignment="Center"
-                    Width="300"
-                    Cursor="Hand">
+                    Width="350">
                 <Grid>
                     <!-- Изображение рецепта -->
                     <Image x:Name="RecipeImage"
                            Stretch="Uniform"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           MaxHeight="150"
-                           MaxWidth="300"/>
+                           MaxHeight="180"
+                           MaxWidth="350"/>
 
                     <!-- Кнопка "+" поверх изображения -->
                     <Button x:Name="AddPhotoButton"
@@ -57,15 +70,15 @@
                             Click="AddPhotoButton_Click">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="+" 
-                                      FontSize="48"
-                                      Foreground="Gray"
+                                      FontSize="60"
+                                      Foreground="#8B4513"
                                       HorizontalAlignment="Center"/>
-                            <TextBlock Text="Фото готового блюда"
+                            <TextBlock Text="📸 Фото готового блюда"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Center"
-                                      Foreground="Gray"
-                                      FontStyle="Italic"
-                                      Margin="0,10,0,0"/>
+                                      Foreground="#8B4513"
+                                      FontSize="14"
+                                      Margin="0,15,0,0"/>
                         </StackPanel>
                     </Button>
 
@@ -73,10 +86,10 @@
                     <Button x:Name="RemovePhotoButton"
                             Content="✕"
                             FontWeight="Bold"
-                            Background="#E74C3C"
+                            Background="#CD5C5C"
                             Foreground="White"
-                            Width="30"
-                            Height="30"
+                            Width="35"
+                            Height="35"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Margin="5"
@@ -87,7 +100,7 @@
             </Border>
 
             <!-- БЖУ и калории -->
-            <Grid Margin="0,0,0,20">
+            <Grid Margin="0,0,0,25">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -97,177 +110,284 @@
 
                 <!-- Белки -->
                 <StackPanel Grid.Column="0" Margin="5">
-                    <TextBlock Text="Белки:" 
+                    <TextBlock Text="🥩 Белки (г):" 
                               FontWeight="SemiBold" 
-                              FontSize="12"/>
-                    <TextBox x:Name="ProteinsTextBox" 
-                            Text="0"
-                            Padding="5"/>
+                              FontSize="14"
+                              Foreground="#8B4513"
+                              Margin="0,0,0,5"/>
+                    <Border Background="White"
+                            BorderBrush="#DEB887"
+                            BorderThickness="2"
+                            Padding="2">
+                        <TextBox x:Name="ProteinsTextBox" 
+                                Text="0"
+                                Padding="8"
+                                FontSize="14"
+                                Background="White"
+                                BorderThickness="0"/>
+                    </Border>
                 </StackPanel>
 
                 <!-- Жиры -->
                 <StackPanel Grid.Column="1" Margin="5">
-                    <TextBlock Text="Жиры:" 
+                    <TextBlock Text="🥑 Жиры (г):" 
                               FontWeight="SemiBold" 
-                              FontSize="12"/>
-                    <TextBox x:Name="FatsTextBox" 
-                            Text="0"
-                            Padding="5"/>
+                              FontSize="14"
+                              Foreground="#8B4513"
+                              Margin="0,0,0,5"/>
+                    <Border Background="White"
+                            BorderBrush="#DEB887"
+                            BorderThickness="2"
+                            Padding="2">
+                        <TextBox x:Name="FatsTextBox" 
+                                Text="0"
+                                Padding="8"
+                                FontSize="14"
+                                Background="White"
+                                BorderThickness="0"/>
+                    </Border>
                 </StackPanel>
 
                 <!-- Углеводы -->
                 <StackPanel Grid.Column="2" Margin="5">
-                    <TextBlock Text="Углеводы:" 
+                    <TextBlock Text="🍞 Углеводы (г):" 
                               FontWeight="SemiBold" 
-                              FontSize="12"/>
-                    <TextBox x:Name="CarbsTextBox" 
-                            Text="0"
-                            Padding="5"/>
+                              FontSize="14"
+                              Foreground="#8B4513"
+                              Margin="0,0,0,5"/>
+                    <Border Background="White"
+                            BorderBrush="#DEB887"
+                            BorderThickness="2"
+                            Padding="2">
+                        <TextBox x:Name="CarbsTextBox" 
+                                Text="0"
+                                Padding="8"
+                                FontSize="14"
+                                Background="White"
+                                BorderThickness="0"/>
+                    </Border>
                 </StackPanel>
 
                 <!-- Калории -->
                 <StackPanel Grid.Column="3" Margin="5">
-                    <TextBlock Text="Калории:" 
+                    <TextBlock Text="🔥 Калории:" 
                               FontWeight="SemiBold" 
-                              FontSize="12"/>
-                    <TextBox x:Name="CaloriesTextBox" 
-                            Text="0"
-                            Padding="5"/>
+                              FontSize="14"
+                              Foreground="#8B4513"
+                              Margin="0,0,0,5"/>
+                    <Border Background="White"
+                            BorderBrush="#DEB887"
+                            BorderThickness="2"
+                            Padding="2">
+                        <TextBox x:Name="CaloriesTextBox" 
+                                Text="0"
+                                Padding="8"
+                                FontSize="14"
+                                Background="White"
+                                BorderThickness="0"/>
+                    </Border>
                 </StackPanel>
             </Grid>
 
             <!-- Время приготовления -->
-            <TextBlock Text="Введите расчётное время приготовления (минуты):" 
+            <TextBlock Text="⏱️ Время приготовления (минуты):" 
+                      FontSize="16"
                       FontWeight="SemiBold"
-                      Margin="0,0,0,5"/>
-            <TextBox x:Name="TimeTextBox" 
-                    Text="0"
-                    Padding="10"
-                    Margin="0,0,0,20"/>
+                      Foreground="#8B4513"
+                      Margin="0,0,0,8"/>
+            <Border Background="White"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2"
+                    Padding="2"
+                    Margin="0,0,0,25">
+                <TextBox x:Name="TimeTextBox" 
+                        Text="0"
+                        Padding="12,10"
+                        FontSize="15"
+                        Background="White"
+                        BorderThickness="0"/>
+            </Border>
 
             <!-- Ингредиенты -->
-            <TextBlock Text="Ингредиенты:" 
+            <TextBlock Text="🥕 Ингредиенты:" 
+                      FontSize="18"
                       FontWeight="SemiBold"
-                      FontSize="16"
-                      Margin="0,0,0,10"/>
+                      Foreground="#8B4513"
+                      Margin="0,0,0,15"/>
 
             <ItemsControl x:Name="IngredientsList" 
-                         Margin="0,0,0,10">
+                         Margin="0,0,0,15">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,5,0,5">
+                        <Grid Margin="0,8,0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox Grid.Column="0" 
-                                    Text="{Binding Name}"
-                                    Padding="5"
-                                    Margin="0,0,5,0"
-                                    FontSize="12"/>
-                            <TextBox Grid.Column="1" 
-                                    Text="{Binding Amount}"
-                                    Padding="5"
-                                    Margin="0,0,5,0"
-                                    FontSize="12"/>
-                            <ComboBox Grid.Column="2" 
-                                     SelectedItem="{Binding Unit}"
-                                     Padding="5"
-                                     Margin="0,0,5,0"
-                                     FontSize="12">
-                                <ComboBoxItem Content="г"/>
-                                <ComboBoxItem Content="мл"/>
-                                <ComboBoxItem Content="шт"/>
-                                <ComboBoxItem Content="ст.л."/>
-                                <ComboBoxItem Content="ч.л."/>
-                                <ComboBoxItem Content="щеп."/>
-                            </ComboBox>
+                            <Border Grid.Column="0" 
+                                    Background="White"
+                                    BorderBrush="#DEB887"
+                                    BorderThickness="2"
+                                    Padding="2"
+                                    Margin="0,0,5,0">
+                                <TextBox Text="{Binding Name}"
+                                        Padding="8"
+                                        FontSize="14"
+                                        Background="White"
+                                        BorderThickness="0"/>
+                            </Border>
+
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#DEB887"
+                                    BorderThickness="2"
+                                    Padding="2"
+                                    Margin="0,0,5,0">
+                                <TextBox Text="{Binding Amount}"
+                                        Padding="8"
+                                        FontSize="14"
+                                        Background="White"
+                                        BorderThickness="0"/>
+                            </Border>
+
+                            <Border Grid.Column="2" 
+                                    Background="White"
+                                    BorderBrush="#DEB887"
+                                    BorderThickness="2"
+                                    Padding="2"
+                                    Margin="0,0,5,0">
+                                <ComboBox SelectedItem="{Binding Unit}"
+                                         Padding="8"
+                                         FontSize="14"
+                                         Background="White"
+                                         BorderThickness="0">
+                                    <ComboBoxItem Content="г"/>
+                                    <ComboBoxItem Content="мл"/>
+                                    <ComboBoxItem Content="шт"/>
+                                    <ComboBoxItem Content="ст.л."/>
+                                    <ComboBoxItem Content="ч.л."/>
+                                    <ComboBoxItem Content="щеп."/>
+                                </ComboBox>
+                            </Border>
+
                             <Button Grid.Column="3" 
-                                    Content="×"
-                                    Background="#E74C3C"
+                                    Content="✕"
+                                    Background="#CD5C5C"
                                     Foreground="White"
                                     FontWeight="Bold"
+                                    FontSize="16"
                                     Click="RemoveIngredient_Click"
-                                    Padding="2"/>
+                                    Padding="2"
+                                    Height="35"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
             <!-- Кнопка добавления ингредиента -->
-            <Button Content="+ Добавить ингредиент" 
-                    Background="#27AE60"
+            <Button Content="➕ Добавить ингредиент" 
+                    Background="#FF7F50"
                     Foreground="White"
+                    FontSize="15"
                     FontWeight="SemiBold"
-                    Padding="10,5"
+                    Padding="15,10"
                     Click="AddIngredient_Click"
                     HorizontalAlignment="Left"
-                    Margin="0,0,0,20"/>
+                    Margin="0,0,0,25"/>
 
             <!-- Описание приготовления -->
-            <TextBlock Text="Внесите описание приготовления блюда:" 
+            <TextBlock Text="📝 Внесите описание приготовления блюда:" 
+                      FontSize="18"
                       FontWeight="SemiBold"
-                      FontSize="16"
-                      Margin="0,0,0,10"/>
+                      Foreground="#8B4513"
+                      Margin="0,0,0,15"/>
 
-            <TextBox x:Name="DescriptionTextBox" 
-                    Height="100"
-                    TextWrapping="Wrap"
-                    AcceptsReturn="True"
-                    VerticalScrollBarVisibility="Auto"
-                    Padding="10"
-                    Margin="0,0,0,20"
-                    FontSize="14"/>
+            <Border Background="White"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2"
+                    Padding="2"
+                    Margin="0,0,0,25">
+                <TextBox x:Name="DescriptionTextBox" 
+                        Height="120"
+                        TextWrapping="Wrap"
+                        AcceptsReturn="True"
+                        VerticalScrollBarVisibility="Auto"
+                        Padding="12"
+                        FontSize="15"
+                        Background="White"
+                        BorderThickness="0"/>
+            </Border>
 
             <!-- Шаги приготовления -->
-            <TextBlock Text="Шаги приготовления:" 
+            <TextBlock Text="👨‍🍳 Шаги приготовления:" 
+                      FontSize="18"
                       FontWeight="SemiBold"
-                      FontSize="16"
-                      Margin="0,0,0,10"/>
+                      Foreground="#8B4513"
+                      Margin="0,0,0,15"/>
 
             <ItemsControl x:Name="StepsList" 
-                         Margin="0,0,0,10">
+                         Margin="0,0,0,15">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,5,0,5">
+                        <Grid Margin="0,8,0,8">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" 
-                                      Text="{Binding StepNumber}"
-                                      VerticalAlignment="Center"
-                                      FontWeight="Bold"/>
-                            <TextBox Grid.Column="1" 
-                                    Text="{Binding Description}"
-                                    Padding="5"
-                                    Margin="5,0,5,0"
-                                    TextWrapping="Wrap"
-                                    AcceptsReturn="True"
-                                    FontSize="12"/>
+                            <Border Grid.Column="0" 
+                                    Background="#FFF0E0"
+                                    BorderBrush="#DEB887"
+                                    BorderThickness="2"
+                                    Padding="2">
+                                <TextBlock Text="{Binding StepNumber}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          FontWeight="Bold"
+                                          FontSize="16"
+                                          Foreground="#8B4513"/>
+                            </Border>
+
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#DEB887"
+                                    BorderThickness="2"
+                                    Padding="2"
+                                    Margin="5,0,5,0">
+                                <TextBox Text="{Binding Description}"
+                                        Padding="8"
+                                        TextWrapping="Wrap"
+                                        AcceptsReturn="True"
+                                        FontSize="14"
+                                        Background="White"
+                                        BorderThickness="0"/>
+                            </Border>
+
                             <Button Grid.Column="2" 
-                                    Content="×"
-                                    Background="#E74C3C"
+                                    Content="✕"
+                                    Background="#CD5C5C"
                                     Foreground="White"
                                     FontWeight="Bold"
+                                    FontSize="16"
                                     Click="RemoveStep_Click"
-                                    Padding="2"/>
+                                    Padding="2"
+                                    Height="35"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
             <!-- Кнопка добавления шага -->
-            <Button Content="+ Добавить шаг приготовления" 
+            <Button Content="➕ Добавить шаг приготовления" 
                     Background="#2980B9"
                     Foreground="White"
+                    FontSize="15"
                     FontWeight="SemiBold"
-                    Padding="10,5"
+                    Padding="15,10"
                     Click="AddStep_Click"
                     HorizontalAlignment="Left"
                     Margin="0,0,0,30"/>
@@ -280,21 +400,23 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" 
-                        Content="Сохранить" 
+                        Content="💾 Сохранить рецепт" 
                         Background="#27AE60"
                         Foreground="White"
+                        FontSize="16"
                         FontWeight="SemiBold"
-                        Padding="15,10"
-                        Margin="0,0,10,0"
+                        Padding="20,12"
+                        Margin="0,0,15,0"
                         Click="SaveButton_Click"/>
 
                 <Button Grid.Column="1" 
-                        Content="Назад" 
-                        Background="#95A5A6"
+                        Content="🔙 Назад" 
+                        Background="#8B7355"
                         Foreground="White"
+                        FontSize="16"
                         FontWeight="SemiBold"
-                        Padding="15,10"
-                        Margin="10,0,0,0"
+                        Padding="20,12"
+                        Margin="15,0,0,0"
                         Click="CancelButton_Click"/>
             </Grid>
 

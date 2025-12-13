@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
-        Title="Menu">
-    <Grid>
+        Title="Меню"
+        Background="#FFF8F0">
 
+    <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -20,83 +21,117 @@
         </Grid.RowDefinitions>
 
         <!-- Заголовок -->
-        <TextBlock Grid.Row="0" 
-                   Text="Составление меню" 
-                   FontSize="24" 
-                   FontWeight="Bold" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,0,0,30"/>
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,0,0,40">
+            <TextBlock Text="🍽️ Составление меню" 
+                       FontSize="28" 
+                       FontWeight="SemiBold" 
+                       Foreground="#8B4513"/>
+            <Border Height="3" 
+                    Width="200" 
+                    Background="#DEB887" 
+                    Margin="0,8,0,0"/>
+        </StackPanel>
 
         <!-- На сколько дней -->
-        <TextBlock Grid.Row="1" 
-                   Text="На сколько дней :" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="1" Margin="0,0,0,30">
+            <TextBlock Text="На сколько дней:" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Foreground="#8B4513"
+                       Margin="0,0,0,10"/>
 
-        <ComboBox Grid.Row="1" 
-                  Name="DaysComboBox"
-                  FontSize="14"
-                  Padding="10,5"
-                  Margin="0,30,0,0"
-                  VerticalContentAlignment="Center"
-                  Height="35">
-            <ComboBoxItem Content="Выберите количество дней" IsSelected="True"/>
-            <ComboBoxItem Content="1 день"/>
-            <ComboBoxItem Content="2 дня"/>
-            <ComboBoxItem Content="3 дня"/>
-            <ComboBoxItem Content="4 дня"/>
-            <ComboBoxItem Content="5 дней"/>
-            <ComboBoxItem Content="6 дней"/>
-            <ComboBoxItem Content="7 дней"/>
-        </ComboBox>
+            <Border Background="White"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2"
+                    Padding="2">
+                <ComboBox Name="DaysComboBox"
+                          FontSize="15"
+                          Padding="12,8"
+                          Height="40"
+                          VerticalContentAlignment="Center"
+                          Background="White"
+                          BorderThickness="0">
+                    <ComboBoxItem Content="Выберите количество дней" IsSelected="True"/>
+                    <ComboBoxItem Content="1 день"/>
+                    <ComboBoxItem Content="2 дня"/>
+                    <ComboBoxItem Content="3 дня"/>
+                    <ComboBoxItem Content="4 дня"/>
+                    <ComboBoxItem Content="5 дней"/>
+                    <ComboBoxItem Content="6 дней"/>
+                    <ComboBoxItem Content="7 дней"/>
+                </ComboBox>
+            </Border>
+        </StackPanel>
 
-        <!-- Разделитель -->
+        <!-- Декоративный разделитель -->
         <Border Grid.Row="2" 
                 Height="1" 
-                Background="LightGray" 
-                Margin="0,30,0,30"/>
+                Background="#DEB887" 
+                Margin="50,20,50,30"/>
 
         <!-- На сколько человек -->
-        <TextBlock Grid.Row="3" 
-                   Text="На сколько человек :" 
-                   FontSize="16" 
-                   FontWeight="SemiBold" 
-                   Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="3" Margin="0,0,0,40">
+            <TextBlock Text="На сколько человек:" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Foreground="#8B4513"
+                       Margin="0,0,0,10"/>
 
-        <ComboBox Grid.Row="3" 
-                  Name="PeopleComboBox"
-                  FontSize="14"
-                  Padding="10,5"
-                  Margin="0,30,0,0"
-                  VerticalContentAlignment="Center"
-                  Height="35">
-            <ComboBoxItem Content="Выберите количество человек" IsSelected="True"/>
-            <ComboBoxItem Content="1 человек"/>
-            <ComboBoxItem Content="2 человека"/>
-            <ComboBoxItem Content="3 человека"/>
-            <ComboBoxItem Content="4 человека"/>
-        </ComboBox>
+            <Border Background="White"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2"
+                    Padding="2">
+                <ComboBox Name="PeopleComboBox"
+                          FontSize="15"
+                          Padding="12,8"
+                          Height="40"
+                          VerticalContentAlignment="Center"
+                          Background="White"
+                          BorderThickness="0">
+                    <ComboBoxItem Content="Выберите количество человек" IsSelected="True"/>
+                    <ComboBoxItem Content="1 человек"/>
+                    <ComboBoxItem Content="2 человека"/>
+                    <ComboBoxItem Content="3 человека"/>
+                    <ComboBoxItem Content="4 человека"/>
+                </ComboBox>
+            </Border>
+        </StackPanel>
 
         <!-- Кнопка создания меню -->
-        <Button Grid.Row="4" 
-                Content="Создать меню" 
-                FontSize="16"
-                Background="LightGreen"
-                Padding="15,8"
-                Margin="0,50,0,0"
-                HorizontalAlignment="Center"
-                Click="CreateMenuButton_Click"
-                Height="40" Width="150"/>
+        <StackPanel Grid.Row="4" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Button Content="📝 Создать меню" 
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Background="#FF7F50"
+                    Foreground="White"
+                    Padding="25,15"
+                    Click="CreateMenuButton_Click"
+                    Width="220"
+                    Height="55">
+            </Button>
+
+            <TextBlock Text="Выберите параметры и создайте свое меню"
+                       FontSize="14"
+                       Foreground="#8B4513"
+                       Margin="0,20,0,0"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
 
         <!-- Кнопка назад -->
-        <Button Grid.Row="5" 
-                Content="Назад" 
-                FontSize="14"
-                Background="LightGray"
-                Padding="10,5"
-                Margin="0,20,0,0"
-                HorizontalAlignment="Right"
-                Click="BackButton_Click" Width="100"/>
+        <StackPanel Grid.Row="5" 
+                    HorizontalAlignment="Right"
+                    Margin="0,30,0,20">
+            <Button Content="🔙 Назад" 
+                    FontSize="15"
+                    Background="#8B7355"
+                    Foreground="White"
+                    Padding="20,10"
+                    Click="BackButton_Click"
+                    Width="130"/>
+        </StackPanel>
     </Grid>
 </Window>

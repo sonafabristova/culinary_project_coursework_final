@@ -8,9 +8,9 @@
         WindowStyle="None"
         Title="Список покупок" 
         WindowStartupLocation="CenterOwner"
-        Background="White">
+        Background="#FFF8F0">
 
-    <Grid Margin="20">
+    <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -18,27 +18,25 @@
         </Grid.RowDefinitions>
 
         <!-- Заголовок -->
-        <Border Grid.Row="0" 
-                BorderBrush="#2C3E50" 
-                BorderThickness="2" 
-                Background="#34495E"
-                Padding="20"
-                Margin="0,0,0,20"
-                CornerRadius="5">
-            <TextBlock Text="Список покупок" 
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Center" 
+                    Margin="0,0,0,25">
+            <TextBlock Text="🛒 Список покупок" 
                       FontSize="28" 
-                      FontWeight="Bold" 
-                      Foreground="White"
-                      TextAlignment="Center"/>
-        </Border>
+                      FontWeight="SemiBold" 
+                      Foreground="#8B4513"/>
+            <Border Height="3" 
+                    Width="220" 
+                    Background="#DEB887" 
+                    Margin="0,8,0,0"/>
+        </StackPanel>
 
         <!-- Основной контент -->
         <Border Grid.Row="1" 
-                BorderBrush="#BDC3C7" 
-                BorderThickness="1" 
-                Background="#F8F9FA"
-                Padding="0"
-                CornerRadius="5">
+                BorderBrush="#DEB887" 
+                BorderThickness="2" 
+                Background="White"
+                Margin="0,0,0,25">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -47,25 +45,24 @@
 
                 <!-- Заголовки таблицы -->
                 <Border Grid.Row="0" 
-                        Background="#3498DB" 
-                        Padding="15"
-                        CornerRadius="5,5,0,0">
+                        Background="#FF7F50" 
+                        Padding="20">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="220"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" 
-                                  Text="Название продукта" 
-                                  FontSize="16" 
-                                  FontWeight="Bold"
+                                  Text="📝 Название продукта" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold"
                                   Foreground="White"/>
 
                         <TextBlock Grid.Column="1" 
-                                  Text="Количество" 
-                                  FontSize="16" 
-                                  FontWeight="Bold"
+                                  Text="⚖️ Количество" 
+                                  FontSize="18" 
+                                  FontWeight="SemiBold"
                                   Foreground="White"
                                   HorizontalAlignment="Center"/>
                     </Grid>
@@ -73,39 +70,39 @@
 
                 <!-- Список продуктов -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Name="ProductsItemsControl" 
-                                 Margin="0">
+                    <ItemsControl Name="ProductsItemsControl">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="#D5DBDB" 
+                                <Border BorderBrush="#DEB887" 
                                         BorderThickness="0,1,0,0" 
-                                        Background="White"
+                                        Background="#FFFDF8"
                                         Padding="0">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="220"/>
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Название продукта -->
-                                        <TextBox Grid.Column="0" 
-                                                 Text="{Binding ProductName, Mode=TwoWay}"
-                                                 BorderThickness="0"
-                                                 Padding="15,12"
-                                                 FontSize="14"
-                                                 VerticalContentAlignment="Center"
-                                                 Background="Transparent"
-                                                 VerticalAlignment="Stretch"/>
+                                        <Border Grid.Column="0" 
+                                                BorderBrush="#DEB887" 
+                                                BorderThickness="0,0,1,0">
+                                            <TextBox Text="{Binding ProductName, Mode=TwoWay}"
+                                                     BorderThickness="0"
+                                                     Padding="20,15"
+                                                     FontSize="15"
+                                                     VerticalContentAlignment="Center"
+                                                     Background="Transparent"
+                                                     VerticalAlignment="Stretch"/>
+                                        </Border>
 
                                         <!-- Количество -->
                                         <Border Grid.Column="1" 
-                                                BorderBrush="#D5DBDB" 
-                                                BorderThickness="1,0,0,0"
-                                                Background="White">
+                                                Background="#FFFDF8">
                                             <TextBox Text="{Binding Quantity, Mode=TwoWay}"
                                                      BorderThickness="0"
-                                                     Padding="15,12"
-                                                     FontSize="14"
+                                                     Padding="20,15"
+                                                     FontSize="15"
                                                      VerticalContentAlignment="Center"
                                                      HorizontalAlignment="Stretch"
                                                      TextAlignment="Center"
@@ -121,7 +118,7 @@
         </Border>
 
         <!-- Кнопки управления -->
-        <Grid Grid.Row="2" Margin="0,20,0,0">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -131,61 +128,62 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Кнопка Назад слева -->
+            <!-- Кнопка Назад -->
             <Button Grid.Column="0" 
-                    Content="Назад" 
-                    Background="#95A5A6"
+                    Content="🔙 Назад" 
+                    Background="#8B7355"
                     Foreground="White"
+                    FontSize="15"
                     FontWeight="SemiBold"
-                    FontSize="14"
-                    Padding="15,10"
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Left"
-                    Width="100"
-                    Click="BackButton_Click"/>
+                    Padding="20,12"
+                    Margin="0,0,15,0"
+                    Click="BackButton_Click"
+                    Width="120"/>
 
             <!-- Кнопка добавления продукта -->
             <Button Grid.Column="1" 
-                    Content="+ Добавить продукт" 
-                    Background="#27AE60"
+                    Content="➕ Добавить продукт" 
+                    Background="#FF7F50"
                     Foreground="White"
+                    FontSize="15"
                     FontWeight="SemiBold"
-                    FontSize="14"
-                    Padding="15,10"
-                    Margin="0,0,10,0"
+                    Padding="20,12"
+                    Margin="0,0,15,0"
                     Click="AddProductButton_Click"/>
 
             <!-- Кнопка удаления -->
             <Button Grid.Column="2" 
-                    Content="Удалить" 
-                    Background="#E74C3C"
+                    Content="🗑️ Удалить" 
+                    Background="#CD5C5C"
                     Foreground="White"
+                    FontSize="15"
                     FontWeight="SemiBold"
-                    FontSize="14"
-                    Padding="15,10"
-                    Margin="0,0,10,0"
+                    Padding="20,12"
+                    Margin="0,0,15,0"
                     Click="DeleteProductButton_Click"
                     Name="DeleteProductButton"/>
 
-            <!-- Кнопка назвать/сохранить -->
+            <!-- Кнопка сохранения -->
             <Button Grid.Column="3" 
-                    Content="Сохранить список" 
-                    Background="#F39C12"
+                    Content="💾 Сохранить список" 
+                    Background="#27AE60"
                     Foreground="White"
+                    FontSize="15"
                     FontWeight="SemiBold"
-                    FontSize="14"
-                    Padding="15,10"
+                    Padding="20,12"
+                    Margin="0,0,15,0"
                     Click="SaveListButton_Click"/>
 
+            <!-- Кнопка выхода -->
             <Button Grid.Column="5" 
-                    Content="Выйти" 
-                    FontSize="14"
-                    Background="LightSalmon"
+                    Content="🚪 Выйти" 
+                    FontSize="15"
+                    Background="#A0522D"
                     Foreground="White"
                     FontWeight="SemiBold"
-                    Padding="15,10"
-                    HorizontalAlignment="Right"
-                    Click="ButtonExitClick"/>
+                    Padding="20,12"
+                    Click="ButtonExitClick"
+                    Width="120"/>
         </Grid>
 
     </Grid>

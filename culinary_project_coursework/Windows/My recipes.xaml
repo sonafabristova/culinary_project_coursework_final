@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
-        Title="Мои рецепты">
+        Title="Мои рецепты"
+        Background="#FFF8F0">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,47 +18,57 @@
         </Grid.ColumnDefinitions>
 
         <!-- Основной контент -->
-        <Grid Grid.Column="0" Margin="20">
+        <Grid Grid.Column="0" Margin="25,25,25,25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Мои рецепты" 
-                      FontSize="24" 
-                      FontWeight="Bold" 
-                      Margin="0,0,0,20"
+            <TextBlock Text="🍳 Мои рецепты" 
+                      FontSize="26" 
+                      FontWeight="SemiBold" 
+                      Foreground="#8B4513"
+                      Margin="0,0,0,25"
                       Grid.Row="0"/>
 
             <!-- ListBox с прокруткой -->
-            <ListBox x:Name="BoxRecipes" 
-                     ItemsSource="{Binding UserRecipes}" 
-                     FontSize="14" 
-                     Background="White"
-                     Grid.Row="1"
-                     SelectionChanged="BoxRecipes_SelectionChanged"
-                     MouseDoubleClick="BoxRecipes_MouseDoubleClick"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <Border Grid.Row="1"
+                    Background="White"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2">
+                <ListBox x:Name="BoxRecipes" 
+                         ItemsSource="{Binding UserRecipes}" 
+                         FontSize="14" 
+                         Background="Transparent"
+                         Grid.Row="1"
+                         SelectionChanged="BoxRecipes_SelectionChanged"
+                         MouseDoubleClick="BoxRecipes_MouseDoubleClick"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         BorderThickness="0">
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <controls:RecipeControl/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:RecipeControl/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0,2,0,2"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,5,0,5"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Border>
         </Grid>
 
         <!-- Боковая панель -->
-        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">
+        <Border Grid.Column="1" 
+                Background="White"
+                BorderBrush="#DEB887" 
+                BorderThickness="2,0,0,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -67,25 +78,34 @@
 
                 <!-- Верхняя часть с кнопками -->
                 <StackPanel Grid.Row="0" Margin="15">
-                    <Border Height="1" Background="LightGray" Margin="0,0,0,20"/>
-                    <Button Content="Меню" 
+                    <TextBlock Text="Управление" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="#8B4513"
+                               Margin="0,0,0,20"/>
+
+                    <Button Content="📋 Меню" 
                             FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
-                            Click="ButtonMenuClick"/>
-                    <Button Content="Добавить рецепт" 
-                            FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
-                            Click="AddMyRecipesClick"/>
-                    <Button Content="Удалить рецепт" 
-                            FontSize="14"
-                            Background="IndianRed"
+                            Background="#FFA07A"
                             Foreground="White"
-                            Padding="10,5"
-                            Margin="5"
+                            Padding="12,10"
+                            Margin="0,0,0,15"
+                            Click="ButtonMenuClick"/>
+
+                    <Button Content="➕ Добавить рецепт" 
+                            FontSize="14"
+                            Background="#FF7F50"
+                            Foreground="White"
+                            Padding="12,10"
+                            Margin="0,0,0,15"
+                            Click="AddMyRecipesClick"/>
+
+                    <Button Content="🗑️ Удалить рецепт" 
+                            FontSize="14"
+                            Background="#CD5C5C"
+                            Foreground="White"
+                            Padding="12,10"
+                            Margin="0,0,0,15"
                             Click="ButtonDeleteRecipe"/>
                 </StackPanel>
 
@@ -94,18 +114,19 @@
 
                 <!-- Кнопки в самом низу -->
                 <StackPanel Grid.Row="2" Margin="15">
-                    <Button Content="Назад" 
+                    <Button Content="🔙 Назад" 
                             FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
+                            Background="#8B7355"
+                            Foreground="White"
+                            Padding="12,10"
+                            Margin="0,0,0,10"
                             Click="ButtonBack"/>
 
-                    <Button Content="Выйти" 
+                    <Button Content="🚪 Выйти" 
                             FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
+                            Background="#A0522D"
+                            Foreground="White"
+                            Padding="12,10"
                             Click="ButtonExitClick"/>
                 </StackPanel>
             </Grid>

@@ -8,7 +8,9 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
-        Title="Кулинарная книга" >
+        Title="Кулинарная книга"
+        Background="#FFF8F0">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -16,55 +18,57 @@
         </Grid.ColumnDefinitions>
 
         <!-- Основной контент -->
-        <Grid Grid.Column="0" Margin="20,20,20,20">
+        <Grid Grid.Column="0" Margin="25,25,25,25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Популярные рецепты" 
-                      FontSize="24" 
-                      FontWeight="Bold" 
-                      Margin="0,0,0,20"
+                      FontSize="26" 
+                      FontWeight="SemiBold" 
+                      Foreground="#8B4513"
+                      Margin="0,0,0,25"
                       Grid.Row="0"/>
 
-            <!-- ListBox с  прокруткой -->
-            <ListBox Name="BoxRecipes" 
-                     ItemsSource="{Binding SystemRecipes}" 
-                     FontSize="14" 
-                     Background="White"
-                     Grid.Row="1"
-                     SelectionChanged="Recipes_Change"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.CanContentScroll="True">
+            <!-- ListBox с прокруткой -->
+            <Border Grid.Row="1"
+                    Background="White"
+                    CornerRadius="10"
+                    BorderBrush="#DEB887"
+                    BorderThickness="2">
+                <ListBox Name="BoxRecipes" 
+                         ItemsSource="{Binding SystemRecipes}" 
+                         FontSize="14" 
+                         Background="Transparent"
+                         Grid.Row="1"
+                         SelectionChanged="Recipes_Change"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         BorderThickness="0">
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <controls:RecipeControl/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:RecipeControl/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0,2,0,2"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-
-                <ListBox.Template>
-                    <ControlTemplate TargetType="ListBox">
-                        <ScrollViewer Focusable="False">
-                            <ItemsPresenter />
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ListBox.Template>
-            </ListBox>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,5,0,5"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Border>
         </Grid>
 
         <!-- Боковая панель -->
-        <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">
+        <Border Grid.Column="1" 
+                Background="White"
+                BorderBrush="#DEB887" 
+                BorderThickness="2,0,0,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -74,31 +78,38 @@
 
                 <!-- Верхняя часть с кнопками -->
                 <StackPanel Grid.Row="0" Margin="15">
-                    <Border Height="1" Background="LightGray" Margin="0,0,0,20"/>
-                    <Button Content="Мои рецепты" 
+                    <TextBlock Text="Навигация" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               Foreground="#8B4513"
+                               Margin="0,0,0,20"/>
+
+                    <Button Content="🍳 Мои рецепты" 
                             FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
+                            Background="#FFA07A"
+                            Foreground="White"
+                            Padding="12,10"
+                            Margin="0,0,0,15"
                             Click="ButtonMyRecipesClick"/>
-                    <Button Content="Меню" 
+
+                    <Button Content="📋 Меню" 
                             FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
+                            Background="#FF7F50"
+                            Foreground="White"
+                            Padding="12,10"
+                            Margin="0,0,0,15"
                             Click="ButtonMenuClick"/>
                 </StackPanel>
 
-                
                 <Border Grid.Row="1"/>
 
                 <!-- Кнопки в самом низу -->
                 <StackPanel Grid.Row="2" Margin="15">
-                    <Button Content="Выйти" 
+                    <Button Content="🚪 Выйти" 
                             FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
+                            Background="#CD5C5C"
+                            Foreground="White"
+                            Padding="12,10"
                             Click="ButtonExitClick"/>
                 </StackPanel>
             </Grid>

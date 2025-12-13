@@ -8,32 +8,37 @@
         WindowStyle="None"
         Title="Создание меню" 
         WindowStartupLocation="CenterOwner"
-        Background="White">
+        Background="#FFF8F0">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20" Name="MainStackPanel">
+        <StackPanel Margin="25" Name="MainStackPanel">
 
-            <!-- Заголовок с информацией о выборе -->
-            <TextBlock Name="TitleTextBlock" 
-                      Text="Создание меню" 
-                      FontSize="24" 
-                      FontWeight="Bold" 
-                      TextAlignment="Center"
-                      Foreground="#2C3E50"
-                      Margin="0,0,0,20"/>
+            <!-- Заголовок -->
+            <StackPanel HorizontalAlignment="Center" 
+                        Margin="0,0,0,25">
+                <TextBlock Name="TitleTextBlock" 
+                          Text="📋 Создание меню" 
+                          FontSize="28" 
+                          FontWeight="SemiBold" 
+                          Foreground="#8B4513"/>
+                <Border Height="3" 
+                        Width="220" 
+                        Background="#DEB887" 
+                        Margin="0,8,0,0"/>
+            </StackPanel>
 
-            <!-- Информация о выбранных параметрах -->
-            <Border BorderBrush="#3498DB" 
-                    BorderThickness="1" 
-                    Background="#EBF5FB"
-                    Padding="15"
-                    Margin="0,0,0,20"
-                    CornerRadius="5">
+            <!-- Информация о параметрах -->
+            <Border BorderBrush="#DEB887" 
+                    BorderThickness="2" 
+                    Background="White"
+                    Padding="20"
+                    Margin="0,0,0,25">
                 <StackPanel>
                     <TextBlock Name="ParametersTextBlock"
                               Text="Параметры меню"
+                              FontSize="18"
                               FontWeight="SemiBold"
-                              Foreground="#2C3E50"
+                              Foreground="#8B4513"
                               TextAlignment="Center"/>
                 </StackPanel>
             </Border>
@@ -42,91 +47,89 @@
             <ItemsControl Name="DaysItemsControl">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#BDC3C7" 
-                                BorderThickness="1" 
-                                Background="#F8F9FA"
+                        <Border BorderBrush="#DEB887" 
+                                BorderThickness="2" 
+                                Background="White"
                                 Padding="15"
-                                Margin="0,0,0,15"
-                                CornerRadius="5">
+                                Margin="0,0,0,20">
                             <StackPanel>
                                 <TextBlock Text="{Binding DayTitle}" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Foreground="#2C3E50"
-                                          Margin="0,0,0,15"
-                                          Background="#E8F6F3"
-                                          Padding="10"
+                                          FontSize="20" 
+                                          FontWeight="SemiBold"
+                                          Foreground="#8B4513"
+                                          Margin="0,0,0,20"
+                                          Background="#FFF5E6"
+                                          Padding="15"
                                           TextAlignment="Center"/>
 
                                 <!-- Контейнер для людей -->
                                 <ItemsControl ItemsSource="{Binding People}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border BorderBrush="#D5DBDB" 
+                                            <Border BorderBrush="#DEB887" 
                                                     BorderThickness="1" 
-                                                    Background="White"
-                                                    Padding="10"
-                                                    Margin="0,0,0,10"
-                                                    CornerRadius="3">
+                                                    Background="#FFFDF8"
+                                                    Padding="15"
+                                                    Margin="0,0,0,15">
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding PersonTitle}" 
-                                                              FontSize="14" 
-                                                              FontWeight="Bold"
-                                                              Foreground="#2C3E50"
-                                                              Margin="0,0,0,10"/>
+                                                              FontSize="16" 
+                                                              FontWeight="SemiBold"
+                                                              Foreground="#8B4513"
+                                                              Margin="0,0,0,15"/>
 
                                                     <!-- Завтрак -->
-                                                    <Grid Margin="0,0,0,5">
+                                                    <Grid Margin="0,0,0,10">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="100"/>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" 
-                                                                  Text="Завтрак" 
+                                                                  Text="🥞 Завтрак" 
                                                                   VerticalAlignment="Center"
                                                                   FontWeight="SemiBold"/>
                                                         <TextBlock Grid.Column="1" 
                                                              Text="{Binding Breakfast.DishName}"
-                                                             Padding="10,5"
-                                                             Margin="5,0,5,0"
-                                                             FontSize="12"
+                                                             Padding="12,8"
+                                                             Margin="10,0,10,0"
+                                                             FontSize="14"
                                                              VerticalAlignment="Center"
-                                                             Background="#FCF3CF"/>
+                                                             Background="#FFF0E0"/>
                                                         <Button Grid.Column="2" 
                                                                 Content="Выбрать"
-                                                                Background="#3498DB"
+                                                                Background="#FFA07A"
                                                                 Foreground="White"
                                                                 FontWeight="SemiBold"
-                                                                Padding="10,5"
+                                                                Padding="12,8"
                                                                 Click="SelectBreakfast_Click"
                                                                 Tag="{Binding PersonId}"/>
                                                     </Grid>
 
                                                     <!-- Обед -->
-                                                    <Grid Margin="0,0,0,5">
+                                                    <Grid Margin="0,0,0,10">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="100"/>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" 
-                                                                  Text="Обед" 
+                                                                  Text="🍲 Обед" 
                                                                   VerticalAlignment="Center"
                                                                   FontWeight="SemiBold"/>
                                                         <TextBlock Grid.Column="1" 
                                                                  Text="{Binding Lunch.DishName}"
-                                                                 Padding="10,5"
-                                                                 Margin="5,0,5,0"
-                                                                 FontSize="12"
+                                                                 Padding="12,8"
+                                                                 Margin="10,0,10,0"
+                                                                 FontSize="14"
                                                                  VerticalAlignment="Center"
-                                                                 Background="#D1F2EB"/> 
+                                                                 Background="#F0F8E0"/>
                                                         <Button Grid.Column="2" 
                                                                 Content="Выбрать"
-                                                                Background="#3498DB"
+                                                                Background="#FF7F50"
                                                                 Foreground="White"
                                                                 FontWeight="SemiBold"
-                                                                Padding="10,5"
+                                                                Padding="12,8"
                                                                 Click="SelectLunch_Click"
                                                                 Tag="{Binding PersonId}"/>
                                                     </Grid>
@@ -139,22 +142,22 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" 
-                                                                  Text="Ужин" 
+                                                                  Text="🍽️ Ужин" 
                                                                   VerticalAlignment="Center"
                                                                   FontWeight="SemiBold"/>
                                                         <TextBlock Grid.Column="1" 
                                                                  Text="{Binding Dinner.DishName}"
-                                                                 Padding="10,5"
-                                                                 Margin="5,0,5,0"
-                                                                 FontSize="12"
+                                                                 Padding="12,8"
+                                                                 Margin="10,0,10,0"
+                                                                 FontSize="14"
                                                                  VerticalAlignment="Center"
-                                                                 Background="#E8DAEF"/> 
+                                                                 Background="#F8E0F0"/>
                                                         <Button Grid.Column="2" 
                                                                 Content="Выбрать"
-                                                                Background="#3498DB"
+                                                                Background="#CD5C5C"
                                                                 Foreground="White"
                                                                 FontWeight="SemiBold"
-                                                                Padding="10,5"
+                                                                Padding="12,8"
                                                                 Click="SelectDinner_Click"
                                                                 Tag="{Binding PersonId}"/>
                                                     </Grid>
@@ -177,32 +180,25 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" 
-                        Content="Сохранить меню" 
-                        Background="#27AE60"
-                        Foreground="White"
-                        FontWeight="SemiBold"
-                        Padding="15,10"
-                        Margin="0,0,10,0"
-                        Click="SaveButton_Click"
-                        Name="SaveButton"/>
 
                 <Button Grid.Column="1" 
-                        Content="Показать меню" 
+                        Content="👁️ Показать меню" 
                         Background="#2980B9"
                         Foreground="White"
+                        FontSize="15"
                         FontWeight="SemiBold"
-                        Padding="15,10"
+                        Padding="20,12"
                         Margin="5,0,5,0"
                         Click="ShowMenuButton_Click"
                         Name="ShowMenuButton"/>
 
                 <Button Grid.Column="2" 
-                        Content="Назад" 
-                        Background="#95A5A6"
+                        Content="🔙 Назад" 
+                        Background="#8B7355"
                         Foreground="White"
+                        FontSize="15"
                         FontWeight="SemiBold"
-                        Padding="15,10"
+                        Padding="20,12"
                         Margin="10,0,0,0"
                         Click="BackButton_Click"/>
             </Grid>
