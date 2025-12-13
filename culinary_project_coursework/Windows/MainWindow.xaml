@@ -19,7 +19,6 @@
         <Grid Grid.Column="0" Margin="20,20,20,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-         
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -29,7 +28,7 @@
                       Margin="0,0,0,20"
                       Grid.Row="0"/>
 
-            <!-- ListBox занимает всё оставшееся пространство -->
+            <!-- ListBox с  прокруткой -->
             <ListBox Name="BoxRecipes" 
                      ItemsSource="{Binding SystemRecipes}" 
                      FontSize="14" 
@@ -37,8 +36,8 @@
                      Grid.Row="1"
                      SelectionChanged="Recipes_Change"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.CanContentScroll="True">
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -53,6 +52,14 @@
                         <Setter Property="Margin" Value="0,2,0,2"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
+
+                <ListBox.Template>
+                    <ControlTemplate TargetType="ListBox">
+                        <ScrollViewer Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ListBox.Template>
             </ListBox>
         </Grid>
 
@@ -82,7 +89,7 @@
                             Click="ButtonMenuClick"/>
                 </StackPanel>
 
-                <!-- Пустое пространство -->
+                
                 <Border Grid.Row="1"/>
 
                 <!-- Кнопки в самом низу -->

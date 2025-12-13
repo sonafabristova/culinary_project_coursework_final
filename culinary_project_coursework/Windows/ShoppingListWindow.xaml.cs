@@ -8,6 +8,8 @@ using System.IO;
 using culinary_project_coursework.Classes;
 using System.Windows.Controls;
 using System.Windows.Media;
+using culinary_project_coursework.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace culinary_project_coursework.Windows
 {
@@ -36,14 +38,12 @@ namespace culinary_project_coursework.Windows
         {
             Loaded += (s, e) =>
             {
-                
                 SubscribeToItemClicks();
             };
         }
 
         private void SubscribeToItemClicks()
         {
-            
             var borders = FindBordersInItemsControl();
             foreach (var border in borders)
             {
@@ -55,13 +55,11 @@ namespace culinary_project_coursework.Windows
         {
             var borders = new List<Border>();
 
-          
             for (int i = 0; i < ProductsItemsControl.Items.Count; i++)
             {
                 var container = ProductsItemsControl.ItemContainerGenerator.ContainerFromIndex(i);
                 if (container != null)
                 {
-                    
                     var border = FindFirstBorder(container);
                     if (border != null)
                     {
@@ -103,9 +101,7 @@ namespace culinary_project_coursework.Windows
         {
             if (sender is Border border && border.DataContext is ShoppingItem item)
             {
-                
                 ResetAllBorderBackgrounds();
-
                 border.Background = System.Windows.Media.Brushes.LightBlue;
                 _selectedItem = item;
             }
@@ -113,7 +109,6 @@ namespace culinary_project_coursework.Windows
 
         private void ResetAllBorderBackgrounds()
         {
-            
             for (int i = 0; i < ProductsItemsControl.Items.Count; i++)
             {
                 var container = ProductsItemsControl.ItemContainerGenerator.ContainerFromIndex(i);
@@ -132,14 +127,12 @@ namespace culinary_project_coursework.Windows
         {
             _shoppingItems = new ObservableCollection<ShoppingItem>();
 
-           
             if (HasSelectedDishes())
             {
                 GenerateShoppingListFromMenu();
             }
             else
             {
-                
                 _shoppingItems.Add(new ShoppingItem
                 {
                     ProductName = "Сначала выберите блюда в меню",
@@ -156,12 +149,13 @@ namespace culinary_project_coursework.Windows
 
             if (ingredients != null && ingredients.Count > 0)
             {
+                var productPrices = LoadProductPricesFromDatabase();
+
                 foreach (var item in ingredients.OrderBy(i => i.Key))
                 {
                     var productName = item.Key;
                     string quantityText = $"{item.Value:0.##}";
 
-                 
                     if (item.Key.Contains('(') && item.Key.Contains(')'))
                     {
                         int start = item.Key.IndexOf('(') + 1;
@@ -178,7 +172,8 @@ namespace culinary_project_coursework.Windows
                     _shoppingItems.Add(new ShoppingItem
                     {
                         ProductName = productName,
-                        Quantity = quantityText
+                        Quantity = quantityText,
+                        EstimatedPrice = GetEstimatedPrice(productName, productPrices)
                     });
                 }
             }
@@ -194,12 +189,55 @@ namespace culinary_project_coursework.Windows
             ProductsItemsControl.ItemsSource = _shoppingItems;
         }
 
+        private Dictionary<string, decimal> LoadProductPricesFromDatabase()
+        {
+            var prices = new Dictionary<string, decimal>();
+
+            try
+            {
+                using (var db = new BdCourseContext())
+                {
+                   
+                    var productsWithPrice = db.Ингредиентыs
+                        .Where(i => i.СрСтоимость != null)
+                        .ToList();
+
+                    foreach (var product in productsWithPrice)
+                    {
+                        if (!string.IsNullOrEmpty(product.Название) && product.СрСтоимость.HasValue)
+                        {
+                            prices[product.Название.ToLower()] = product.СрСтоимость.Value;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+             
+                Console.WriteLine($"Ошибка загрузки цен: {ex.Message}");
+            }
+
+            return prices;
+        }
+
+        private decimal? GetEstimatedPrice(string productName, Dictionary<string, decimal> productPrices)
+        {
+           
+            string key = productName.ToLower();
+
+            if (productPrices.ContainsKey(key))
+            {
+                return productPrices[key];
+            }
+
+            return null;
+        }
+
         private bool HasSelectedDishes()
         {
             if (_menuPlan == null || _menuPlan.Days == null)
                 return false;
 
-            
             foreach (var day in _menuPlan.Days)
             {
                 if (day.People == null) continue;
@@ -243,13 +281,17 @@ namespace culinary_project_coursework.Windows
                 }
             }
 
+            // Загружаем цены из БД
+            var productPrices = LoadProductPricesFromDatabase();
+
             // ингредиенты в список покупок
             foreach (var ingredient in allIngredients)
             {
                 _shoppingItems.Add(new ShoppingItem
                 {
                     ProductName = ingredient.Key,
-                    Quantity = $"{ingredient.Value:0.##} г"
+                    Quantity = $"{ingredient.Value:0.##} г",
+                    EstimatedPrice = GetEstimatedPrice(ingredient.Key, productPrices)
                 });
             }
 
@@ -324,7 +366,7 @@ namespace culinary_project_coursework.Windows
             {
                 Filter = "Текстовые файлы (*.txt)|*.txt",
                 Title = "Сохранить список покупок",
-                FileName = $"Список_покупок_{DateTime.Now:yyyyMMdd_HHmm}.txt"
+                FileName = $"Список_покупок_.txt"
             };
 
             if (saveDialog.ShowDialog() == true)
@@ -347,14 +389,15 @@ namespace culinary_project_coursework.Windows
         {
             using (var writer = new StreamWriter(filePath))
             {
-              
                 writer.WriteLine("СПИСОК ПОКУПОК");
-         
+    
                 writer.WriteLine();
-              
                 writer.WriteLine();
 
                 int index = 1;
+                decimal totalEstimatedCost = 0;
+                int productsWithPrice = 0;
+
                 foreach (var item in _shoppingItems)
                 {
                     if (!string.IsNullOrEmpty(item.ProductName) &&
@@ -363,13 +406,34 @@ namespace culinary_project_coursework.Windows
                         !item.ProductName.Contains("Нет выбранных рецептов"))
                     {
                         writer.WriteLine($"{index}. {item.ProductName} - {item.Quantity}");
+
+                        // Если есть ориентировочная цена
+                        if (item.EstimatedPrice.HasValue)
+                        {
+                            writer.WriteLine($"   Ориентировочная стоимость: {item.EstimatedPrice.Value:0.##} руб");
+                            totalEstimatedCost += item.EstimatedPrice.Value;
+                            productsWithPrice++;
+                        }
+
+                        writer.WriteLine();
                         index++;
                     }
                 }
 
                 writer.WriteLine();
                 writer.WriteLine($"Всего продуктов: {index - 1}");
-                
+
+                // Добавляем строку с общей стоимостью
+                if (productsWithPrice > 0)
+                {
+                    writer.WriteLine($"Ориентировочная общая стоимость: {totalEstimatedCost:0.##} руб");
+                    writer.WriteLine($"(на основе цен стандартных упаковок для {productsWithPrice} продуктов)");
+                }
+                else
+                {
+                   
+                    writer.WriteLine("(цены продуктов не указаны в базе данных)");
+                }
             }
         }
 
@@ -388,5 +452,6 @@ namespace culinary_project_coursework.Windows
     {
         public string ProductName { get; set; }
         public string Quantity { get; set; }
+        public decimal? EstimatedPrice { get; set; } 
     }
 }

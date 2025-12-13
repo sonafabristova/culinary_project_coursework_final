@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:culinary_project_coursework"
-         xmlns:controls="clr-namespace:culinary_project_coursework.Controls"
+        xmlns:controls="clr-namespace:culinary_project_coursework.Controls"
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
         Title="Мои рецепты" >
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -16,30 +17,33 @@
         </Grid.ColumnDefinitions>
 
         <!-- Основной контент -->
-        <StackPanel Grid.Column="0" Margin="20">
+        <Grid Grid.Column="0" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <TextBlock Text="Мои рецепты" 
                       FontSize="24" 
                       FontWeight="Bold" 
-                      Margin="0,0,0,20"/>
+                      Margin="0,0,0,20"
+                      Grid.Row="0"/>
 
-            <!-- ListBox с включенной вертикальной прокруткой -->
+            <!-- ListBox с прокруткой -->
             <ListBox Name="BoxRecipes" 
                      ItemsSource="{Binding UserRecipes}" 
                      FontSize="14" 
                      Background="White"
-                     Margin="0,0,0,10"
+                     Grid.Row="1"
                      SelectionChanged="Recipes_Change"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     MaxHeight="500">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <controls:RecipeControl/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-
-           
-
 
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
@@ -49,7 +53,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-        </StackPanel>
+        </Grid>
 
         <!-- Боковая панель -->
         <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">
@@ -70,11 +74,19 @@
                             Margin="5"
                             Click="ButtonMenuClick"/>
                     <Button Content="Добавить рецепт" 
-                         FontSize="14"
-                         Background="LightSalmon"
-                         Padding="10,5"
-                         Margin="5"
-                         Click="AddMyRecipesClick"/>
+                            FontSize="14"
+                            Background="LightSalmon"
+                            Padding="10,5"
+                            Margin="5"
+                            Click="AddMyRecipesClick"/>
+                    
+                    <Button Content="Удалить рецепт" 
+                            FontSize="14"
+                            Background="IndianRed"
+                            Foreground="White"
+                            Padding="10,5"
+                            Margin="5"
+                            Click="ButtonDeleteRecipe"/>
                 </StackPanel>
 
                 <!-- Пустое пространство -->
@@ -90,11 +102,11 @@
                             Click="ButtonBack"/>
 
                     <Button Content="Выйти" 
-                            FontSize="14"
-                            Background="LightSalmon"
-                            Padding="10,5"
-                            Margin="5"
-                            Click="ButtonExitClick"/>
+                                FontSize="14"
+                                Background="LightSalmon"
+                                Padding="10,5"
+                                Margin="5"
+                                Click="ButtonExitClick"/>
                 </StackPanel>
             </Grid>
         </Border>

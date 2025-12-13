@@ -259,15 +259,48 @@ namespace culinary_project_coursework.Windows
             var button = sender as Button;
             if (button?.Tag is Рецепты recipe && recipe != null)
             {
-                var detailsWindow = new RecipeDetailsWindow(recipe);
-                detailsWindow.ShowDialog();
+      
+                var fullRecipe = LoadFullRecipe(recipe.IdРецепта);
+
+                if (fullRecipe != null)
+                {
+                    var detailsWindow = new RecipeDetailsWindow(fullRecipe);
+                    detailsWindow.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось загрузить данные рецепта", "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else
             {
                 MessageBox.Show("Рецепт не выбран", "Информация",
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
 
+        private Рецепты LoadFullRecipe(int recipeId)
+        {
+            try
+            {
+                using (var db = new BdCourseContext())
+                {
+                    
+                    return db.Рецептыs
+                        .Include(r => r.СоставБлюдаs)
+                            .ThenInclude(s => s.FkИнгредиентаNavigation)
+                                .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)
+                        .Include(r => r.ШагиПриготовленияs)
+                        .Include(r => r.CreatedByUser)
+                        .FirstOrDefault(r => r.IdРецепта == recipeId);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки рецепта: {ex.Message}", "Ошибка");
+                return null;
+            }
         }
     }
 }

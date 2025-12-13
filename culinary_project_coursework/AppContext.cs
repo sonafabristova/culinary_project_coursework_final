@@ -8,10 +8,8 @@ namespace culinary_project_coursework
 {
     public static class AppContext
     {
-        // Текущий пользователь ID
         public static int? CurrentUserId { get; set; }
 
-        // Свойство CurrentUser для совместимости
         public static Пользователи CurrentUser
         {
             get
@@ -48,7 +46,7 @@ namespace culinary_project_coursework
                     .ToList();
             }
         }
-        // Свойство Users для совместимости
+        
         public static List<Пользователи> Users
         {
             get
@@ -69,8 +67,6 @@ namespace culinary_project_coursework
             }
         }
 
-        // Свойство Recipes для совместимости
-        // Исправленное свойство Recipes
         public static List<Рецепты> Recipes
         {
             get
@@ -96,8 +92,6 @@ namespace culinary_project_coursework
             }
         }
 
-        // Метод для получения системных рецептов (ВСЕГДА СВЕЖИЕ)
-        // Исправленный метод в AppContext.cs
         public static List<Рецепты> GetSystemRecipes()
         {
             try
@@ -110,7 +104,7 @@ namespace culinary_project_coursework
                             .ThenInclude(s => s.FkИнгредиентаNavigation)
                                 .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)
                         .Include(r => r.ШагиПриготовленияs)
-                        .Where(r => r.IsSystemRecipe == true && r.CreatedByUserId == null) // Явно проверяем NULL
+                        .Where(r => r.IsSystemRecipe == true && r.CreatedByUserId == null) 
                         .ToList();
                 }
             }
@@ -120,7 +114,7 @@ namespace culinary_project_coursework
                 return new List<Рецепты>();
             }
         }
-        // Исправленный метод для пользовательских рецептов
+
         public static List<Рецепты> GetUserRecipes(int userId)
         {
             try
@@ -131,7 +125,7 @@ namespace culinary_project_coursework
                         .Include(r => r.CreatedByUser)
                         .Include(r => r.СоставБлюдаs)
                             .ThenInclude(s => s.FkИнгредиентаNavigation)
-                                .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)  // Добавлено
+                                .ThenInclude(i => i.FkЕдиницыИзмеренияNavigation)  
                         .Include(r => r.ШагиПриготовленияs)
                         .Where(r => r.CreatedByUserId == userId && r.IsSystemRecipe == false)
                         .ToList();
@@ -206,8 +200,6 @@ namespace culinary_project_coursework
             }
         }
 
-        // Добавление рецепта
-        // Добавление рецепта
         public static void AddRecipe(Рецепты recipe)
         {
             try
@@ -306,14 +298,14 @@ namespace culinary_project_coursework
                     ingredient = new Ингредиенты
                     {
                         Название = name,
-                        FkЕдиницыИзмерения = 1 // По умолчанию граммы
-                                               // ПРОБЛЕМА: Возможно где-то еще устанавливается IdИнгредиента
+                        FkЕдиницыИзмерения = 1 
+                                            
                     };
                     context.Ингредиентыs.Add(ingredient);
                     context.SaveChanges();
                 }
 
-                return ingredient; // ← Возвращает объект с ID
+                return ingredient; 
             }
         }
     }
