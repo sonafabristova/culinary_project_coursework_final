@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Input; 
+using System.Windows.Input;
 using culinary_project_coursework.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +12,7 @@ namespace culinary_project_coursework.Windows
     public partial class My_recipes : Window
     {
         public ObservableCollection<Рецепты> UserRecipes { get; set; }
+        private Рецепты _selectedForDeletion;
 
         public My_recipes()
         {
@@ -37,7 +38,7 @@ namespace culinary_project_coursework.Windows
                         UserRecipes.Add(recipe);
                     }
 
-                    Console.WriteLine($"Загружено {UserRecipes.Count} пользовательских рецептов");
+           
 
                     if (UserRecipes.Count == 0)
                     {
@@ -46,7 +47,7 @@ namespace culinary_project_coursework.Windows
                 }
                 else
                 {
-                    MessageBox.Show("Пользователь не авторизован");
+                 
                 }
             }
             catch (Exception ex)
@@ -56,13 +57,24 @@ namespace culinary_project_coursework.Windows
             }
         }
 
-      
+        // ОДИН КЛИК - просмотр деталей
+        private void BoxRecipes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BoxRecipes.SelectedItem is Рецепты selectedRecipe && e.AddedItems.Count > 0)
+            {
+                ShowRecipeDetails(selectedRecipe);
+                // Не сбрасываем выделение сразу, чтобы пользователь видел какой рецепт выбран
+            }
+        }
+
+        // ДВА КЛИКА - выбор для удаления
         private void BoxRecipes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (BoxRecipes.SelectedItem is Рецепты selectedRecipe)
             {
-                ShowRecipeDetails(selectedRecipe);
-                BoxRecipes.SelectedItem = null; 
+                _selectedForDeletion = selectedRecipe;
+
+               
             }
         }
 
@@ -112,10 +124,13 @@ namespace culinary_project_coursework.Windows
 
         private void ButtonDeleteRecipe(object sender, RoutedEventArgs e)
         {
-            if (BoxRecipes.SelectedItem is Рецепты selectedRecipe)
+            // Используем рецепт, выбранный двойным кликом, или текущий выделенный
+            var recipeToDelete = _selectedForDeletion ?? BoxRecipes.SelectedItem as Рецепты;
+
+            if (recipeToDelete != null)
             {
                 MessageBoxResult result = MessageBox.Show(
-                    $"Вы уверены, что хотите удалить рецепт '{selectedRecipe.Название}'?\n\n" +
+                    $"Вы уверены, что хотите удалить рецепт '{recipeToDelete.Название}'?\n\n" +
                     "Это действие нельзя отменить!",
                     "Подтверждение удаления",
                     MessageBoxButton.YesNo,
@@ -125,9 +140,13 @@ namespace culinary_project_coursework.Windows
                 {
                     try
                     {
-                        AppContext.DeleteRecipe(selectedRecipe.IdРецепта);
+                        AppContext.DeleteRecipe(recipeToDelete.IdРецепта);
 
-                        UserRecipes.Remove(selectedRecipe);
+                        UserRecipes.Remove(recipeToDelete);
+
+                        // Сбрасываем выбор для удаления
+                        _selectedForDeletion = null;
+                        BoxRecipes.SelectedItem = null;
 
                         MessageBox.Show("Рецепт успешно удален!", "Успех",
                             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -142,19 +161,15 @@ namespace culinary_project_coursework.Windows
             }
             else
             {
-                MessageBox.Show("Пожалуйста, выберите рецепт для удаления.\n\n" +
-                    "Кликните по рецепту в списке, а затем нажмите кнопку 'Удалить рецепт'.",
-                    "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+               
             }
         }
 
-       
         private void BoxRecipes_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && BoxRecipes.SelectedItem is Рецепты selectedRecipe)
             {
                 ShowRecipeDetails(selectedRecipe);
-                BoxRecipes.SelectedItem = null;
             }
         }
 

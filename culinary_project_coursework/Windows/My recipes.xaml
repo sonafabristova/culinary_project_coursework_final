@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
-        Title="Мои рецепты" >
+        Title="Мои рецепты">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,12 +30,13 @@
                       Grid.Row="0"/>
 
             <!-- ListBox с прокруткой -->
-            <ListBox Name="BoxRecipes" 
+            <ListBox x:Name="BoxRecipes" 
                      ItemsSource="{Binding UserRecipes}" 
                      FontSize="14" 
                      Background="White"
                      Grid.Row="1"
-                     SelectionChanged="Recipes_Change"
+                     SelectionChanged="BoxRecipes_SelectionChanged"
+                     MouseDoubleClick="BoxRecipes_MouseDoubleClick"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
@@ -79,7 +80,6 @@
                             Padding="10,5"
                             Margin="5"
                             Click="AddMyRecipesClick"/>
-                    
                     <Button Content="Удалить рецепт" 
                             FontSize="14"
                             Background="IndianRed"
@@ -102,11 +102,11 @@
                             Click="ButtonBack"/>
 
                     <Button Content="Выйти" 
-                                FontSize="14"
-                                Background="LightSalmon"
-                                Padding="10,5"
-                                Margin="5"
-                                Click="ButtonExitClick"/>
+                            FontSize="14"
+                            Background="LightSalmon"
+                            Padding="10,5"
+                            Margin="5"
+                            Click="ButtonExitClick"/>
                 </StackPanel>
             </Grid>
         </Border>

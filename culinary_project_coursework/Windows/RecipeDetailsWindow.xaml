@@ -21,10 +21,10 @@
                       Margin="0,0,0,20"
                       TextWrapping="Wrap"/>
 
-            <!-- Фото готового блюда - УПРОЩЕННЫЙ ВАРИАНТ -->
-            <Border BorderBrush="LightGray" 
+            
+            <Border 
                     BorderThickness="1" 
-                    Background="#F8F9FA"
+                   
                     Height="200"
                     Margin="0,0,0,20"
                     HorizontalAlignment="Center"

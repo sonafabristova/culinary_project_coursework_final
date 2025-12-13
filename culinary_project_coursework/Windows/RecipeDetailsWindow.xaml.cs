@@ -29,8 +29,7 @@ namespace culinary_project_coursework.Windows
                 this.Title = $"Рецепт - {_recipe.Название}";
                 TitleText.Text = _recipe.Название;
 
-                // Для отладки показываем путь к изображению
-                Console.WriteLine($"Путь к изображению в рецепте: {_recipe.Изображение ?? "NULL"}");
+                
 
                 // Загружаем изображение рецепта
                 LoadRecipeImage(_recipe.Изображение);
@@ -62,16 +61,14 @@ namespace culinary_project_coursework.Windows
             {
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    Console.WriteLine($"Загружаем изображение по пути: {imagePath}");
 
                     // Преобразуем относительный путь в абсолютный
                     string fullPath = GetFullImagePath(imagePath);
-                    Console.WriteLine($"Полный путь: {fullPath}");
-                    Console.WriteLine($"Файл существует: {File.Exists(fullPath)}");
+                    
 
                     if (File.Exists(fullPath))
                     {
-                        Console.WriteLine("Файл найден! Загружаем...");
+                       
                         var bitmap = new BitmapImage();
                         bitmap.BeginInit();
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
@@ -79,17 +76,17 @@ namespace culinary_project_coursework.Windows
                         bitmap.EndInit();
 
                         RecipeImage.Source = bitmap;
-                        Console.WriteLine("Изображение успешно загружено!");
+                      
                         return;
                     }
                     else
                     {
-                        MessageBox.Show($"Изображение не найдено по пути:\n{fullPath}", "Ошибка");
+                       
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Путь к изображению пустой или null");
+                    
                 }
 
                 // Если фото нет или не найдено - просто оставляем пустым
@@ -98,7 +95,7 @@ namespace culinary_project_coursework.Windows
             catch (Exception ex)
             {
                 RecipeImage.Source = null;
-                MessageBox.Show($"Ошибка загрузки изображения: {ex.Message}\n\nПуть: {imagePath}", "Ошибка");
+               
             }
         }
 
@@ -108,18 +105,17 @@ namespace culinary_project_coursework.Windows
             {
                 // Очищаем путь от лишних символов
                 relativePath = relativePath.Trim();
-                Console.WriteLine($"Очищенный путь: '{relativePath}'");
+                
 
                 // Если путь уже абсолютный
                 if (Path.IsPathRooted(relativePath))
                 {
-                    Console.WriteLine("Путь абсолютный");
                     return relativePath;
                 }
 
                 // Базовая директория приложения
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                Console.WriteLine($"BaseDirectory: {baseDir}");
+               
 
                 // Пробуем разные варианты
                 List<string> possiblePaths = new List<string>();
@@ -132,14 +128,14 @@ namespace culinary_project_coursework.Windows
                     if (!string.IsNullOrEmpty(projectRoot))
                     {
                         possiblePaths.Add(Path.Combine(projectRoot, relativePath.Replace("/", "\\")));
-                        Console.WriteLine($"Путь 1 (проект): {possiblePaths.Last()}");
+                       
                     }
                 }
                 catch { }
 
                 // 2. Из папки с исполняемым файлом
                 possiblePaths.Add(Path.Combine(baseDir, relativePath.Replace("/", "\\")));
-                Console.WriteLine($"Путь 2 (base): {possiblePaths.Last()}");
+                
 
                 // 3. Если Images/Recipes/ в начале пути
                 if (relativePath.StartsWith("Images/Recipes/") || relativePath.StartsWith("Images\\Recipes\\"))
@@ -152,13 +148,13 @@ namespace culinary_project_coursework.Windows
                     {
                         string path = Path.Combine(projectRoot, "Images", "Recipes", fileName);
                         possiblePaths.Add(path);
-                        Console.WriteLine($"Путь 3 (Images/Recipes): {path}");
+                      
                     }
                 }
 
                 // 4. В папке Images рядом с исполняемым файлом
                 possiblePaths.Add(Path.Combine(baseDir, "Images", "Recipes", Path.GetFileName(relativePath)));
-                Console.WriteLine($"Путь 4 (base/Images): {possiblePaths.Last()}");
+              
 
                 // Ищем первый существующий файл
                 foreach (var path in possiblePaths)
@@ -180,7 +176,7 @@ namespace culinary_project_coursework.Windows
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка в GetFullImagePath: {ex.Message}");
+                
                 return relativePath;
             }
         }
