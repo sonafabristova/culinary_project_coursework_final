@@ -10,11 +10,16 @@
         Title="RegWindow" 
         >
     <Grid>
-        <Image Source="C:\Users\sonaf\Source\Repos\culinary_project_coursework_final\culinary_project_coursework\Images\Autor_page.jpg" 
+        <Image Source="C:\ВКИ\РПМ_3 курс\repos\culinary_project_coursework\Images\Autor_win.jpeg" 
         Stretch="UniformToFill" 
         Opacity="0.7"/>
-    
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+
+                <TextBlock Text="Регистрация"  Margin="10,190,150,10" FontSize="25" FontWeight="DemiBold"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel Margin="5" Orientation="Horizontal">
             <TextBox Width="120" Name="BoxLogin"/>
             <TextBlock Margin="5,0,0,0" Text="Login"/>
@@ -32,9 +37,10 @@
             <TextBlock Margin="5,0,0,0" Text="Phone number"/>
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
-            <Button Content="Создать аккаунт" Name="ButtonCreateAccount" Click="ButtonCreateAccount_Click"/>
-            <Button Margin="5,0,0,0" Content="Отмена" Name="ButtonCancel" Click="ButtonCancel_Click"/>
+                <Button Content="Создать аккаунт" Name="ButtonCreateAccount" Click="ButtonCreateAccount_Click" Background="PeachPuff"/>
+                <Button Margin="5,0,0,0" Content="Отмена" Name="ButtonCancel" Click="ButtonCancel_Click" Background="PeachPuff"/>
         </StackPanel>
+        
     </StackPanel>
         </Grid>
 </Window>

@@ -25,13 +25,10 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                // Устанавливаем заголовок окна и название рецепта
                 this.Title = $"Рецепт - {_recipe.Название}";
                 TitleText.Text = _recipe.Название;
 
                 
-
-                // Загружаем изображение рецепта
                 LoadRecipeImage(_recipe.Изображение);
 
                 // БЖУ и калории
@@ -43,10 +40,8 @@ namespace culinary_project_coursework.Windows
                 // Время приготовления
                 TimeText.Text = $"{_recipe.ВремяПриготовления} минут";
 
-                // Загружаем ингредиенты из БД, если они не загружены
                 LoadIngredientsFromDatabase();
 
-                // Загружаем шаги из БД, если они не загружены
                 LoadStepsFromDatabase();
             }
             catch (Exception ex)
@@ -62,7 +57,6 @@ namespace culinary_project_coursework.Windows
                 if (!string.IsNullOrEmpty(imagePath))
                 {
 
-                    // Преобразуем относительный путь в абсолютный
                     string fullPath = GetFullImagePath(imagePath);
                     
 
@@ -89,7 +83,6 @@ namespace culinary_project_coursework.Windows
                     
                 }
 
-                // Если фото нет или не найдено - просто оставляем пустым
                 RecipeImage.Source = null;
             }
             catch (Exception ex)
@@ -103,24 +96,19 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                // Очищаем путь от лишних символов
                 relativePath = relativePath.Trim();
                 
-
-                // Если путь уже абсолютный
                 if (Path.IsPathRooted(relativePath))
                 {
                     return relativePath;
                 }
 
-                // Базовая директория приложения
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                
 
-                // Пробуем разные варианты
                 List<string> possiblePaths = new List<string>();
 
-                // 1. Корень проекта (поднимаемся на 3 уровня из bin/Debug/netX.0)
+                // 1. Корень проекта 
                 try
                 {
                     DirectoryInfo dir = new DirectoryInfo(baseDir);
@@ -133,11 +121,11 @@ namespace culinary_project_coursework.Windows
                 }
                 catch { }
 
-                // 2. Из папки с исполняемым файлом
+                // 2. Из папки с файлом
                 possiblePaths.Add(Path.Combine(baseDir, relativePath.Replace("/", "\\")));
                 
 
-                // 3. Если Images/Recipes/ в начале пути
+                // 3 Images/Recipes/ в начале пути
                 if (relativePath.StartsWith("Images/Recipes/") || relativePath.StartsWith("Images\\Recipes\\"))
                 {
                     // Убираем Images/Recipes/ из начала
@@ -152,11 +140,9 @@ namespace culinary_project_coursework.Windows
                     }
                 }
 
-                // 4. В папке Images рядом с исполняемым файлом
+                // 4. В папке Images 
                 possiblePaths.Add(Path.Combine(baseDir, "Images", "Recipes", Path.GetFileName(relativePath)));
               
-
-                // Ищем первый существующий файл
                 foreach (var path in possiblePaths)
                 {
                     try
@@ -164,14 +150,13 @@ namespace culinary_project_coursework.Windows
                         string fullPath = Path.GetFullPath(path);
                         if (File.Exists(fullPath))
                         {
-                            Console.WriteLine($"Найден файл: {fullPath}");
+                           
                             return fullPath;
                         }
                     }
                     catch { }
                 }
 
-                // Если не нашли, возвращаем первый вариант
                 return possiblePaths.FirstOrDefault() ?? relativePath;
             }
             catch (Exception ex)
@@ -192,7 +177,7 @@ namespace culinary_project_coursework.Windows
                     return;
                 }
 
-                // Загружаем ингредиенты из БД
+               
                 using (var db = new BdCourseContext())
                 {
                     var ingredients = db.СоставБлюдаs
@@ -249,14 +234,12 @@ namespace culinary_project_coursework.Windows
         {
             try
             {
-                // Если шаги уже загружены
                 if (_recipe.ШагиПриготовленияs != null && _recipe.ШагиПриготовленияs.Any())
                 {
                     DisplaySteps();
                     return;
                 }
 
-                // Загружаем шаги из БД
                 using (var db = new BdCourseContext())
                 {
                     var steps = db.ШагиПриготовленияs

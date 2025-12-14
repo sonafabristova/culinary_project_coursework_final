@@ -17,7 +17,7 @@
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Основной контент -->
+        
         <Grid Grid.Column="0" Margin="25,25,25,25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

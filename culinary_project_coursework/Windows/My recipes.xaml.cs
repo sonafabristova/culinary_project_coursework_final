@@ -57,17 +57,15 @@ namespace culinary_project_coursework.Windows
             }
         }
 
-        // ОДИН КЛИК - просмотр деталей
+       
         private void BoxRecipes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (BoxRecipes.SelectedItem is Рецепты selectedRecipe && e.AddedItems.Count > 0)
             {
                 ShowRecipeDetails(selectedRecipe);
-                // Не сбрасываем выделение сразу, чтобы пользователь видел какой рецепт выбран
             }
         }
 
-        // ДВА КЛИКА - выбор для удаления
         private void BoxRecipes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (BoxRecipes.SelectedItem is Рецепты selectedRecipe)
@@ -124,7 +122,6 @@ namespace culinary_project_coursework.Windows
 
         private void ButtonDeleteRecipe(object sender, RoutedEventArgs e)
         {
-            // Используем рецепт, выбранный двойным кликом, или текущий выделенный
             var recipeToDelete = _selectedForDeletion ?? BoxRecipes.SelectedItem as Рецепты;
 
             if (recipeToDelete != null)

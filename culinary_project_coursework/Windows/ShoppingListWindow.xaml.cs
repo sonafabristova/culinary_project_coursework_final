@@ -329,26 +329,7 @@ namespace culinary_project_coursework.Windows
             SubscribeToItemClicks();
         }
 
-        private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_selectedItem != null)
-            {
-                var result = MessageBox.Show($"Удалить продукт '{_selectedItem.ProductName}'?",
-                    "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    _shoppingItems.Remove(_selectedItem);
-                    _selectedItem = null;
-                    ResetAllBorderBackgrounds();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Для удаления сначала выберите продукт, кликнув по нему", "Информация",
-                              MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
+        
 
         private void SaveListButton_Click(object sender, RoutedEventArgs e)
         {

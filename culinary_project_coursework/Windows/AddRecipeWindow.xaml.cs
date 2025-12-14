@@ -91,11 +91,9 @@ namespace culinary_project_coursework.Windows
             _selectedImagePath = null;
             _savedImagePath = null;
 
-            // Скрываем кнопку удаления и показываем кнопку "+"
             RemovePhotoButton.Visibility = Visibility.Collapsed;
             AddPhotoButton.Visibility = Visibility.Visible;
 
-            // Восстанавливаем курсор "рука"
             PhotoBorder.Cursor = Cursors.Hand;
         }
 
@@ -107,7 +105,7 @@ namespace culinary_project_coursework.Windows
 
             try
             {
-                // Получаем путь к КОРНЮ ПРОЕКТА (не к bin/Debug/)
+                // Получаем путь к КОРНЮ ПРОЕКТА 
                 string projectRoot = GetProjectRootDirectory();
              
                 string imagesFolder = Path.Combine(projectRoot, "Images", "Recipes");

@@ -9,7 +9,7 @@
         WindowStyle="None"
         Title="Autor" Height="450" Width="800">
     <Grid>
-        <Image Source="C:\Users\sonaf\Source\Repos\culinary_project_coursework_final\culinary_project_coursework\Images\Autor_page.jpg" 
+        <Image Source="C:\ВКИ\РПМ_3 курс\repos\culinary_project_coursework\Images\Autor_win.jpeg" 
                Stretch="UniformToFill" 
                Opacity="0.7"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,130,10">
