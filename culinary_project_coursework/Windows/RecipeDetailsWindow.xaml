@@ -152,10 +152,7 @@
                               FontWeight="Bold"
                               Margin="10,0,0,0"
                               Foreground="#8B4513"/>
-                    <TextBlock Text=" минут" 
-                              FontSize="16"
-                              Margin="5,0,0,0"
-                              Foreground="#8B4513"/>
+                 
                 </StackPanel>
             </Border>
 

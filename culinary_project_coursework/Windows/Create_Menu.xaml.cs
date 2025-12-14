@@ -147,20 +147,7 @@ namespace culinary_project_coursework.Windows
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SaveMenuToDatabase();
-                MessageBox.Show("Меню успешно сохранено!", "Успех",
-                              MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при сохранении меню: {ex.Message}", "Ошибка",
-                              MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+       
 
         private void ShowMenuButton_Click(object sender, RoutedEventArgs e)
         {
@@ -222,10 +209,6 @@ namespace culinary_project_coursework.Windows
             this.Close();
         }
 
-        private void SaveMenuToDatabase()
-        {
-           
-            Console.WriteLine("Сохранение меню в базу данных...");
-        }
+       
     }
 }

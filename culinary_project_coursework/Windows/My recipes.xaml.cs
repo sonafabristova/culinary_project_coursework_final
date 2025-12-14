@@ -144,12 +144,11 @@ namespace culinary_project_coursework.Windows
 
                         UserRecipes.Remove(recipeToDelete);
 
-                        // Сбрасываем выбор для удаления
+                        
                         _selectedForDeletion = null;
                         BoxRecipes.SelectedItem = null;
 
-                        MessageBox.Show("Рецепт успешно удален!", "Успех",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                       
                     }
                     catch (Exception ex)
                     {
@@ -201,8 +200,7 @@ namespace culinary_project_coursework.Windows
                         }
                     }
 
-                    MessageBox.Show("Рецепт успешно добавлен!", "Успех",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    
                 }
                 catch (Exception ex)
                 {

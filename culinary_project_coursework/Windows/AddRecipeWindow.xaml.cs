@@ -107,22 +107,17 @@ namespace culinary_project_coursework.Windows
 
             try
             {
-                // Показываем путь для отладки
-                Console.WriteLine($"Выбранное изображение: {_selectedImagePath}");
-
                 // Получаем путь к КОРНЮ ПРОЕКТА (не к bin/Debug/)
                 string projectRoot = GetProjectRootDirectory();
-                Console.WriteLine($"Корень проекта: {projectRoot}");
-
-                // Проверяем, существует ли папка Images/Recipes/
+             
                 string imagesFolder = Path.Combine(projectRoot, "Images", "Recipes");
-                Console.WriteLine($"Целевая папка: {imagesFolder}");
+             
 
                 // Создаем папки если их нет
                 if (!Directory.Exists(imagesFolder))
                 {
                     Directory.CreateDirectory(imagesFolder);
-                    Console.WriteLine($"Создана папка: {imagesFolder}");
+                    
                 }
 
                 // Генерируем уникальное имя файла
@@ -132,27 +127,22 @@ namespace culinary_project_coursework.Windows
 
                 // Копируем файл
                 File.Copy(_selectedImagePath, destinationPath, true);
-                Console.WriteLine($"Файл скопирован в: {destinationPath}");
-
-                // Сохраняем ОТНОСИТЕЛЬНЫЙ путь для БД
+               
                 _savedImagePath = $"Images/Recipes/{fileName}";
-                Console.WriteLine($"Относительный путь для БД: {_savedImagePath}");
-
-                // Проверяем, что файл существует
+               
                 if (File.Exists(destinationPath))
                 {
-                    Console.WriteLine($"Файл успешно сохранен. Размер: {new FileInfo(destinationPath).Length} байт");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("ОШИБКА: файл не был создан!");
+                   
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка сохранения изображения: {ex.Message}");
+               
                 MessageBox.Show($"Ошибка сохранения изображения: {ex.Message}",
                               "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 _savedImagePath = null;
@@ -167,7 +157,7 @@ namespace culinary_project_coursework.Windows
             {
                 // Текущая директория (обычно bin/Debug/netX.0/)
                 string currentDir = AppDomain.CurrentDomain.BaseDirectory;
-                Console.WriteLine($"Текущая директория: {currentDir}");
+             
 
                 // Поднимаемся на 3 уровня вверх: bin/Debug/netX.0 -> корень проекта
                 DirectoryInfo dir = new DirectoryInfo(currentDir);
@@ -179,7 +169,7 @@ namespace culinary_project_coursework.Windows
                     var csprojFiles = dir.GetFiles("*.csproj");
                     if (csprojFiles.Length > 0)
                     {
-                        Console.WriteLine($"Найден .csproj в: {dir.FullName}");
+                       
                         return dir.FullName;
                     }
                     dir = dir.Parent;
@@ -189,16 +179,15 @@ namespace culinary_project_coursework.Windows
                 string projectRoot = Directory.GetParent(currentDir)?.Parent?.Parent?.FullName;
                 if (!string.IsNullOrEmpty(projectRoot))
                 {
-                    Console.WriteLine($"Проектный корень (3 уровня вверх): {projectRoot}");
+                   
                     return projectRoot;
                 }
 
-                Console.WriteLine($"Не удалось найти корень проекта, используем: {currentDir}");
                 return currentDir;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка получения корня проекта: {ex.Message}");
+               
                 return AppDomain.CurrentDomain.BaseDirectory;
             }
         }

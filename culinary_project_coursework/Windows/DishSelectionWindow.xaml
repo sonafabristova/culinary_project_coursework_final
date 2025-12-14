@@ -51,8 +51,8 @@
                       Height="40"
                       VerticalContentAlignment="Center"
                       Background="White"
-                      BorderThickness="0"
-                      SelectionChanged="RecipeTypeComboBox_SelectionChanged">
+                      BorderThickness="0">
+                <!--="RecipeTypeComboBox_SelectionChanged">-->
                 <ComboBoxItem Content="Все рецепты" IsSelected="True" Tag="all"/>
                 <ComboBoxItem Content="Системные рецепты" Tag="system"/>
                 <ComboBoxItem Content="Пользовательские рецепты" Tag="user"/>
